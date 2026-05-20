@@ -2,21 +2,9 @@
 
 import { motion } from "framer-motion";
 import { ContactForm } from "@/components/contact-form";
-import { MapPin, Mail, Phone, Clock } from "lucide-react";
+import { MapPin, Phone, Clock } from "lucide-react";
 
 const contactInfo = [
-  {
-    icon: Mail,
-    label: "Email",
-    value: "info@farmacosm.com",
-    href: "mailto:info@farmacosm.com",
-  },
-  {
-    icon: Phone,
-    label: "Phone",
-    value: "016 329 930 / 076 421 0661",
-    href: "tel:+85516329930",
-  },
   {
     icon: MapPin,
     label: "Address",
@@ -55,8 +43,8 @@ export function ContactPageClient() {
   return (
     <section className="relative bg-background py-3 sm:py-3 lg:py-4">
 
-      <div className="mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-12">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-8 sm:gap-12 lg:grid-cols-12 lg:gap-16">
           {/* Left - Contact Info Column */}
           <motion.div
             className="w-full lg:col-span-5 order-2 lg:order-1"
@@ -65,14 +53,13 @@ export function ContactPageClient() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <div className="flex flex-col h-full space-y-8">
-              {/* Contact Cards - One card per row */}
+            <div className="flex flex-col h-full gap-6 sm:gap-8">
+              {/* Contact Cards - Address & Hours */}
               <motion.div
-                className="flex flex-col space-y-6"
+                className="flex flex-col gap-4 sm:gap-6"
                 variants={containerVariants}
                 initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
+                animate="visible"
               >
                 {contactInfo.map((info) => {
                   const Icon = info.icon;
@@ -80,28 +67,19 @@ export function ContactPageClient() {
                     <motion.div
                       key={info.label}
                       variants={itemVariants}
-                      className="group rounded-2xl border border-primary/10 bg-white p-6 transition-all duration-300 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/15 w-full"
+                      className="group rounded-xl sm:rounded-2xl border border-primary/10 bg-white p-4 sm:p-5 lg:p-6 transition-all duration-300 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/15 w-full"
                     >
-                      <div className="flex items-start">
-                        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white group-hover:scale-110 mr-5">
-                          <Icon className="h-7 w-7" />
+                      <div className="flex items-start gap-3 sm:gap-4 lg:gap-5">
+                        <div className="flex h-12 sm:h-14 w-12 sm:w-14 shrink-0 items-center justify-center rounded-lg sm:rounded-xl bg-primary/10 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white group-hover:scale-110">
+                          <Icon className="h-5 sm:h-6 lg:h-7 w-5 sm:w-6 lg:w-7" />
                         </div>
-                        <div className="pt-1">
-                          <p className="text-sm font-semibold uppercase tracking-wider text-primary mb-1.5">
+                        <div className="pt-0 sm:pt-1">
+                          <p className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-primary mb-1 sm:mb-1.5">
                             {info.label}
                           </p>
-                          {info.href ? (
-                            <a
-                              href={info.href}
-                              className="text-base lg:text-lg font-medium text-gray-900 transition-colors hover:text-primary leading-relaxed"
-                            >
-                              {info.value}
-                            </a>
-                          ) : (
-                            <p className="text-base lg:text-lg font-medium text-gray-900 leading-relaxed">
-                              {info.value}
-                            </p>
-                          )}
+                          <p className="text-sm sm:text-base lg:text-lg font-medium text-gray-900 leading-relaxed">
+                            {info.value}
+                          </p>
                         </div>
                       </div>
                     </motion.div>
@@ -109,9 +87,49 @@ export function ContactPageClient() {
                 })}
               </motion.div>
 
+              {/* Call Action Button */}
+              <motion.div
+                className="flex flex-col gap-3 sm:gap-4"
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+              >
+                {/* <div className="mb-2">
+                  <p className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-primary">
+                    Quick Contact
+                  </p>
+                  <p className="text-xs sm:text-sm text-gray-600 mt-1">
+                    Click to call us directly
+                  </p>
+                </div> */}
+                <motion.a
+                  href="tel:+85516329930"
+                  variants={itemVariants}
+                  className="group rounded-xl sm:rounded-2xl border border-primary/20 bg-gradient-to-r from-primary/5 to-primary/10 p-4 sm:p-5 lg:p-6 transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/20 hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/15 flex items-center justify-between cursor-pointer"
+                >
+                  <div className="flex items-center gap-3 sm:gap-4">
+                    <div className="flex h-12 sm:h-14 w-12 sm:w-14 shrink-0 items-center justify-center rounded-lg sm:rounded-xl bg-primary/20 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white group-hover:scale-110">
+                      <Phone className="h-5 sm:h-6 lg:h-7 w-5 sm:w-6 lg:w-7" />
+                    </div>
+                    <div>
+                      <p className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-primary">
+                        Call Us
+                      </p>
+                      <p className="text-sm sm:text-base font-medium text-gray-900">
+                        Click to call
+                      </p>
+                    </div>
+                  </div>
+                  <div className="text-primary transition-transform duration-300 group-hover:translate-x-1">
+                    →
+                  </div>
+                </motion.a>
+              </motion.div>
+
               {/* Map */}
               <motion.div
-                className="overflow-hidden rounded-2xl border border-primary/10 shadow-lg bg-white h-80 lg:h-96"
+                className="overflow-hidden rounded-xl sm:rounded-2xl border border-primary/10 shadow-lg bg-white h-72 sm:h-80 lg:h-96"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}

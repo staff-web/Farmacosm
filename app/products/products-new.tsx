@@ -1,501 +1,375 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ChevronDown } from "lucide-react";
-import { useSearchParams } from "next/navigation";
+import { X } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { categories, Product, productData, SLUG_TO_CATEGORY } from "./products-data";
 
-const productData = {
-  "Pharmaceutical and health care": [
-    {
-      id: 1,
-      name: "Pharmaceutical Grade Sodium Bicarbonate",
-      image: "/images/blog-pharma.jpg",
-      category: "Pharmaceutical and health care",
-      specs: "99.8% purity, Ph.Eur standard",
-      price: "Contact for quote",
-      description: "High-quality pharmaceutical grade sodium bicarbonate for pharmaceutical formulations.",
-      features: ["Ph.Eur certified", "99.8% purity", "Bulk availability", "FDA compliant"],
-    },
-    {
-      id: 2,
-      name: "Sodium Stannate",
-      image: "/images/blog-compliance.jpg",
-      category: "Pharmaceutical and health care",
-      specs: "Industrial & pharmaceutical grade",
-      price: "Contact for quote",
-      description: "Premium sodium stannate for advanced pharmaceutical and chemical applications.",
-      features: ["Multiple grades", "Consistent quality", "Competitive pricing", "Long shelf life"],
-    },
-  ],
-  "Agro-product": [
-    {
-      id: 3,
-      name: "Premium Feed Additive Complex",
-      image: "/images/blog-sustainable.jpg",
-      category: "Agro-product",
-      specs: "Customizable formulations",
-      price: "Contact for quote",
-      description: "Specialized feed additives to improve livestock health and productivity.",
-      features: ["Custom blending", "Quality assured", "Cost effective", "Regulatory compliant"],
-    },
-    {
-      id: 4,
-      name: "Growth Promoting Feed Mix",
-      image: "/images/blog-market.jpg",
-      category: "Agro-product",
-      specs: "Tested for efficacy",
-      price: "Contact for quote",
-      description: "Scientifically formulated feed additives for optimal animal nutrition.",
-      features: ["Performance tested", "Natural ingredients", "Bioavailable", "Shelf stable"],
-    },
-  ],
-  "Packaging": [
-    {
-      id: 5,
-      name: "Biodegradable Polymer Compound",
-      image: "/images/blog-partnership.jpg",
-      category: "PLASTIC MATERIALS",
-      specs: "Eco-friendly formulation",
-      price: "Contact for quote",
-      description: "Advanced biodegradable plastic materials for sustainable packaging.",
-      features: ["Eco-friendly", "High strength", "Temperature resistant", "Recyclable"],
-    },
-    {
-      id: 6,
-      name: "High-Performance Plastic Resin",
-      image: "/images/blog-tech.jpg",
-      category: "PLASTIC MATERIALS",
-      specs: "Industrial grade",
-      price: "Contact for quote",
-      description: "Premium plastic resins for demanding industrial applications.",
-      features: ["High durability", "Chemical resistant", "Easy processing", "Cost effective"],
-    },
-  ],
-  "CHEMICAL MATERIALS": [
-    {
-      id: 7,
-      name: "Industrial Chemical Solvent",
-      image: "/images/hero-lab.jpg",
-      category: "CHEMICAL MATERIALS",
-      specs: "Lab and industrial use",
-      price: "Contact for quote",
-      description: "Pure chemical solvents for laboratory and industrial applications.",
-      features: ["High purity", "Safe handling", "Proper labeling", "Bulk orders"],
-    },
-    {
-      id: 8,
-      name: "Advanced Catalyst Material",
-      image: "/images/pharma-materials.jpg",
-      category: "CHEMICAL MATERIALS",
-      specs: "Reaction optimization",
-      price: "Contact for quote",
-      description: "Specialized catalysts for chemical reactions and industrial processes.",
-      features: ["High efficiency", "Reusable", "Cost saving", "Proven results"],
-    },
-  ],
-  "FOOD ADDITIVES": [
-    {
-      id: 9,
-      name: "Natural Food Preservative",
-      image: "/images/chemical-supply.jpg",
-      category: "FOOD ADDITIVES",
-      specs: "Food grade certified",
-      price: "Contact for quote",
-      description: "Natural preservatives and additives for food manufacturing.",
-      features: ["Natural origin", "Food safe", "Clean label", "Effective preservation"],
-    },
-    {
-      id: 10,
-      name: "Emulsifier Complex for Beverages",
-      image: "/images/blog-pharma.jpg",
-      category: "FOOD ADDITIVES",
-      specs: "Stabilizing agent",
-      price: "Contact for quote",
-      description: "Premium emulsifiers for stable beverage and food formulations.",
-      features: ["Superior stability", "Homogeneous mixing", "Shelf stable", "Cost efficient"],
-    },
-  ],
-  "SODIUM HYDROXIDE": [
-    {
-      id: 11,
-      name: "Pharmaceutical Grade Sodium Hydroxide",
-      image: "/images/blog-compliance.jpg",
-      category: "SODIUM HYDROXIDE",
-      specs: "USP/BP certified",
-      price: "Contact for quote",
-      description: "Pure sodium hydroxide for pharmaceutical and laboratory use.",
-      features: ["USP certified", "High purity", "Safe packaging", "Bulk availability"],
-    },
-    {
-      id: 12,
-      name: "Industrial Sodium Hydroxide Solution",
-      image: "/images/blog-sustainable.jpg",
-      category: "SODIUM HYDROXIDE",
-      specs: "50% liquid solution",
-      price: "Contact for quote",
-      description: "Industrial strength sodium hydroxide for manufacturing processes.",
-      features: ["Ready to use", "Consistent strength", "Large containers", "Economical"],
-    },
-  ],
-  "EDTA SERIES": [
-    {
-      id: 13,
-      name: "EDTA Disodium",
-      image: "/images/blog-market.jpg",
-      category: "EDTA SERIES",
-      specs: "Chelating agent",
-      price: "Contact for quote",
-      description: "Chelating agent for pharmaceutical and cosmetic applications.",
-      features: ["Stable complex formation", "Wide compatibility", "pH flexible", "Proven efficacy"],
-    },
-    {
-      id: 14,
-      name: "EDTA Tetrasodium",
-      image: "/images/blog-partnership.jpg",
-      category: "EDTA SERIES",
-      specs: "Advanced chelation",
-      price: "Contact for quote",
-      description: "Superior chelating complex for advanced pharmaceutical formulations.",
-      features: ["Rapid chelation", "High stability", "Enhanced solubility", "Premium grade"],
-    },
-  ],
-  "SPECIALTY MATERIALS": [
-    {
-      id: 15,
-      name: "Hafnium Oxide Powder",
-      image: "/images/blog-tech.jpg",
-      category: "SPECIALTY MATERIALS",
-      specs: "High purity grade",
-      price: "Contact for quote",
-      description: "Premium hafnium oxide for advanced material applications.",
-      features: ["99.9% purity", "Fine powder", "Stable suspension", "Custom sizing"],
-    },
-    {
-      id: 16,
-      name: "Scandium Trichloride Solution",
-      image: "/images/hero-lab.jpg",
-      category: "SPECIALTY MATERIALS",
-      specs: "Concentrated solution",
-      price: "Contact for quote",
-      description: "Specialty chemical for advanced synthesis and research.",
-      features: ["Lab grade", "Precisely measured", "Sealed storage", "Documentation included"],
-    },
-    {
-      id: 17,
-      name: "Boron Nitride Powder",
-      image: "/images/pharma-materials.jpg",
-      category: "SPECIALTY MATERIALS",
-      specs: "Hexagonal form",
-      price: "Contact for quote",
-      description: "Boron nitride for thermal and mechanical applications.",
-      features: ["High thermal conductivity", "Electrically insulating", "Chemical inert", "Fine particle size"],
-    },
-  ],
+// ─── Animation variants ───────────────────────────────────────────────────────
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.08, delayChildren: 0.04 } },
 };
 
-const categories = Object.keys(productData);
+const itemVariants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.38, ease: [0.22, 1, 0.36, 1] } },
+};
+
+// ─── Product Card — matches screenshot exactly ────────────────────────────────
+
+function ProductCard({
+  product,
+  onSelect,
+}: {
+  product: Product;
+  onSelect: (p: Product) => void;
+}) {
+  return (
+    <motion.div
+      variants={itemVariants}
+      onClick={() => onSelect(product)}
+      className="group bg-white rounded-lg sm:rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex flex-col h-full"
+    >
+      {/* Image - fixed height remains the same */}
+      <div className="relative h-40 sm:h-44 lg:h-48 overflow-hidden bg-gray-100 flex-shrink-0">
+        <Image
+          src={product.image || "/placeholder.svg"}
+          alt={product.name}
+          fill
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        />
+      </div>
+
+      {/* Content - flex column to push footer down */}
+      <div className="p-4 sm:p-4 lg:p-5 flex flex-col flex-grow">
+        {/* Title - can wrap but doesn't affect alignment */}
+        <h3 className="text-sm sm:text-base font-bold text-gray-900 leading-snug">
+          {product.name}
+        </h3>
+        
+        {/* Specs - can wrap */}
+        <p className="mt-1 text-xs sm:text-sm text-gray-500">{product.specs}</p>
+
+        {/* Spacer that pushes the View Details link to the bottom */}
+        <div className="flex-grow" />
+
+        {/* View Details link - now always at bottom */}
+        <div className="mt-3 sm:mt-4">
+          <span className="text-xs sm:text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors">
+            View Details →
+          </span>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+// ─── Modal — matches screenshot exactly ──────────────────────────────────────
+
+function ProductModal({
+  product,
+  onClose,
+}: {
+  product: Product;
+  onClose: () => void;
+}) {
+  // Prevent body scroll while modal is open
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 lg:p-6 bg-black/60"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.96, y: 12 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.96, y: 12 }}
+        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+        className="relative w-full max-w-xl sm:max-w-2xl max-h-[90vh] overflow-y-auto bg-white rounded-lg sm:rounded-2xl shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Close button - X in top-right corner */}
+        <button
+          onClick={onClose}
+          className="absolute top-3 sm:top-4 right-3 sm:right-4 z-10 p-1.5 sm:p-2 bg-white/90 hover:bg-white rounded-full shadow-md transition-all duration-200 hover:scale-105"
+          aria-label="Close modal"
+        >
+          <X className="h-4 sm:h-5 w-4 sm:w-5 text-gray-700" />
+        </button>
+
+        {/* Hero image */}
+        <div className="relative h-40 sm:h-48 lg:h-60 w-full bg-gray-100 flex-shrink-0">
+          <Image
+            src={product.image || "/placeholder.svg"}
+            alt={product.name}
+            fill
+            className="object-cover rounded-t-lg sm:rounded-t-2xl"
+            sizes="(max-width: 672px) 100vw, 672px"
+          />
+        </div>
+
+        {/* Body */}
+        <div className="p-4 sm:p-6 lg:p-8">
+          {/* Category pill */}
+          <span className="inline-block bg-blue-50 text-blue-600 text-xs font-medium px-2.5 sm:px-3 py-1 rounded-full border border-blue-100">
+            {product.category}
+          </span>
+
+          {/* Title */}
+          <h2 className="mt-2 sm:mt-3 text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900 leading-tight">
+            {product.name}
+          </h2>
+
+          {/* Price */}
+          <p className="mt-1.5 sm:mt-2 text-sm sm:text-base font-semibold text-blue-600">{product.price}</p>
+
+          <hr className="my-3 sm:my-4 lg:my-5 border-gray-100" />
+
+          {/* Specs */}
+          <div className="mb-4 sm:mb-5">
+            <h3 className="text-xs sm:text-sm font-bold text-gray-900 uppercase tracking-wide mb-2">
+              Specifications
+            </h3>
+            <p className="text-xs sm:text-sm text-gray-600">{product.specs}</p>
+          </div>
+
+          {/* Description */}
+          <div className="mb-4 sm:mb-5">
+            <h3 className="text-xs sm:text-sm font-bold text-gray-900 uppercase tracking-wide mb-2">
+              Description
+            </h3>
+            <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">{product.description}</p>
+          </div>
+
+          {/* Features — 2-column grid */}
+          {product.features && product.features.length > 0 && (
+            <div className="mb-4 sm:mb-5">
+              <h3 className="text-xs sm:text-sm font-bold text-gray-900 uppercase tracking-wide mb-2 sm:mb-3">
+                Features
+              </h3>
+              <div className="grid grid-cols-1 gap-1.5 sm:gap-2 sm:grid-cols-2 lg:gap-x-6 lg:gap-y-2">
+                {product.features.map((feature, idx) => (
+                  <div key={idx} className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-600">
+                    <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-blue-500" />
+                    {feature}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Applications */}
+          {product.applications && product.applications.length > 0 && (
+            <div className="mb-4 sm:mb-5">
+              <h3 className="text-xs sm:text-sm font-bold text-gray-900 uppercase tracking-wide mb-2 sm:mb-3">
+                Applications
+              </h3>
+              <div className="grid grid-cols-1 gap-1.5 sm:gap-2 sm:grid-cols-2 lg:gap-x-6 lg:gap-y-2">
+                {product.applications.map((app, idx) => (
+                  <div key={idx} className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-600">
+                    <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-blue-500" />
+                    {app}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Technical data */}
+          {product.technicalData && (
+            <div className="mb-4 sm:mb-6">
+              <h3 className="text-xs sm:text-sm font-bold text-gray-900 uppercase tracking-wide mb-2">
+                Technical Data
+              </h3>
+              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed whitespace-pre-line">
+                {product.technicalData}
+              </p>
+            </div>
+          )}
+
+          <hr className="mb-4 sm:mb-5 border-gray-100" />
+
+          {/* Action buttons — matches screenshot */}
+          <div className="flex gap-2 sm:gap-3">
+            <button
+              className="flex-1 py-2 sm:py-3 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold rounded-lg sm:rounded-xl transition-colors"
+              onClick={onClose}
+            >
+              Request Quote
+            </button>
+            <button
+              className="flex-1 py-2 sm:py-3 bg-white hover:bg-gray-50 text-gray-900 text-xs sm:text-sm font-semibold rounded-lg sm:rounded-xl border border-gray-200 transition-colors"
+              onClick={onClose}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
+// ─── Main Component ───────────────────────────────────────────────────────────
 
 export function ProductsNewContent() {
   const searchParams = useSearchParams();
-  const categoryParam = searchParams.get('category');
+  const router = useRouter();
+  const categoryParam = searchParams.get("category");
 
-  const [selectedCategory, setSelectedCategory] = useState<string>(
-    categories[0]
-  );
-  const [selectedProduct, setSelectedProduct] = useState<any>(null);
-  const [expandedCategory, setExpandedCategory] = useState<string>(
-    categories[0]
-  );
+  const [selectedCategory, setSelectedCategory] = useState<string>(categories[0]);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  
+  // Create a ref for the products section
+  const productsSectionRef = useRef<HTMLDivElement>(null);
 
-  // Set selected category from URL param
+  // Resolve category from URL ?category= param
   useEffect(() => {
-    if (categoryParam) {
-      const formattedCategory = categoryParam.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-      if (categories.includes(formattedCategory)) {
-        setSelectedCategory(formattedCategory);
-        setExpandedCategory(formattedCategory);
-      }
+    if (!categoryParam) return;
+
+    // Try slug map first (e.g. "pharmaceutical-health-care")
+    const fromSlug = SLUG_TO_CATEGORY[categoryParam];
+    if (fromSlug && (categories as readonly string[]).includes(fromSlug)) {
+      setSelectedCategory(fromSlug);
+      return;
     }
+
+    // Fallback: loose case-insensitive match
+    const normalized = categoryParam.replace(/-/g, " ").toLowerCase();
+    const match = (categories as readonly string[]).find(
+      (c) => c.toLowerCase() === normalized
+    );
+    if (match) setSelectedCategory(match);
   }, [categoryParam]);
 
-  const currentProducts = productData[selectedCategory as keyof typeof productData] || [];
+  // Scroll to products section when category changes (including initial load)
+  useEffect(() => {
+    if (categoryParam && productsSectionRef.current) {
+      // Small delay to ensure DOM is fully rendered
+      setTimeout(() => {
+        productsSectionRef.current?.scrollIntoView({ 
+          behavior: "smooth", 
+          block: "start" 
+        });
+      }, 100);
+    }
+  }, [categoryParam, selectedCategory]);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1, delayChildren: 0.1 },
-    },
-  };
+  const currentProducts = productData[selectedCategory] ?? [];
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
+  const handleCategorySelect = (category: string) => {
+    setSelectedCategory(category);
+    const slug =
+      Object.entries(SLUG_TO_CATEGORY).find(([, v]) => v === category)?.[0] ?? "";
+    router.push(`/products?category=${slug}`, { scroll: false });
   };
 
   return (
     <>
-      {/* Products Section */}
-      <section className="bg-background py-12 sm:py-16 lg:py-20 min-h-screen">
+      <section className="bg-white py-12 sm:py-16 lg:py-20 min-h-screen">
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 sm:gap-8">
-            {/* Sidebar - Categories */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="lg:col-span-1"
+          <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-10 items-start lg:items-stretch">
+
+            {/* ── LEFT SIDEBAR ─────────────────────────────────────────── */}
+            <motion.aside
+              initial={{ opacity: 0, x: -16 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.45 }}
+              className="w-full lg:w-56 xl:w-64 flex-shrink-0"
             >
-              <div className="sticky top-20 sm:top-24 space-y-2">
-                {/* Header */}
-                <div className="bg-primary px-4 py-3 rounded-lg mb-4">
-                  <h2 className="text-lg font-bold text-primary-foreground uppercase tracking-wide">
+              <div className="lg:sticky lg:top-24">
+                {/* "PRODUCTS" header — solid blue, matches screenshot */}
+                <div className="bg-blue-600 px-3 sm:px-4 lg:px-5 py-2.5 sm:py-3 lg:py-3.5 rounded-t-lg">
+                  <h2 className="text-xs sm:text-sm font-bold text-white uppercase tracking-widest">
                     Products
                   </h2>
                 </div>
 
-                {/* Categories List */}
-                <div className="space-y-1 bg-card rounded-lg border border-border overflow-hidden">
-                  {categories.map((category, index) => {
+                {/* Category list */}
+                <div className="border border-t-0 border-gray-200 rounded-b-lg overflow-hidden bg-white max-h-96 sm:max-h-none overflow-y-auto sm:overflow-y-visible">
+                  {(categories as readonly string[]).map((category, index) => {
                     const isSelected = selectedCategory === category;
-                    const hasSubcategories =
-                      category === "PLASTIC MATERIALS" ||
-                      category === "CHEMICAL MATERIALS" ||
-                      category === "FOOD ADDITIVES";
+                    const isLast = index === (categories as readonly string[]).length - 1;
 
                     return (
-                      <div key={category}>
-                        <button
-                          onClick={() => {
-                            setSelectedCategory(category);
-                            setExpandedCategory(
-                              expandedCategory === category ? "" : category
-                            );
-                          }}
-                          className={`w-full text-left px-4 py-3 border-b border-border transition-all flex items-center justify-between ${
-                            isSelected
-                              ? "bg-primary/10 text-primary font-semibold"
-                              : "bg-white hover:bg-muted text-foreground"
-                          }`}
-                        >
-                          <span className="text-sm font-medium">{category}</span>
-                          {hasSubcategories && (
-                            <motion.div
-                              animate={{
-                                rotate: expandedCategory === category ? 180 : 0,
-                              }}
-                              transition={{ duration: 0.3 }}
-                            >
-                              <ChevronDown className="h-4 w-4" />
-                            </motion.div>
-                          )}
-                        </button>
-
-                        {/* Subcategories */}
-                        <AnimatePresence>
-                          {hasSubcategories &&
-                            expandedCategory === category && (
-                              <motion.div
-                                initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: "auto" }}
-                                exit={{ opacity: 0, height: 0 }}
-                                transition={{ duration: 0.3 }}
-                                className="bg-muted/50 border-b border-border"
-                              >
-                                <button
-                                  className="w-full text-left px-6 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                                  onClick={() => setSelectedCategory(category)}
-                                >
-                                  View all
-                                </button>
-                              </motion.div>
-                            )}
-                        </AnimatePresence>
-                      </div>
+                      <button
+                        key={category}
+                        onClick={() => handleCategorySelect(category)}
+                        className={`w-full text-left px-3 sm:px-4 lg:px-5 py-2.5 sm:py-3 lg:py-3.5 transition-colors duration-150 text-xs sm:text-sm ${
+                          !isLast ? "border-b border-gray-100" : ""
+                        } ${
+                          isSelected
+                            ? "bg-blue-50 text-blue-600"
+                            : "bg-white text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+                        }`}
+                      >
+                        <span className={isSelected ? "font-semibold" : "font-normal"}>
+                          {category}
+                        </span>
+                      </button>
                     );
                   })}
                 </div>
               </div>
-            </motion.div>
+            </motion.aside>
 
-            {/* Main Content - Products Grid */}
-            <motion.div
-              className="lg:col-span-3"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-            >
-              {/* Category Header */}
-              <div className="mb-8">
-                <h1 className="text-3xl sm:text-4xl font-bold text-foreground">
+            {/* ── RIGHT PANEL ───────────────────────────────────────────── */}
+            <div className="flex-1 w-full" ref={productsSectionRef}>
+              {/* Category heading */}
+              <motion.div
+                key={selectedCategory + "-hd"}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.28 }}
+                className="mb-6 sm:mb-8"
+              >
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">
                   {selectedCategory}
                 </h1>
-                <p className="mt-2 text-muted-foreground">
-                  {currentProducts.length} products available
+                <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-gray-500">
+                  {currentProducts.length} product{currentProducts.length !== 1 ? "s" : ""} available
                 </p>
-              </div>
-
-              {/* Products Grid */}
-              <motion.div
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-                variants={containerVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-100px" }}
-              >
-                {currentProducts.map((product) => (
-                  <motion.button
-                    key={product.id}
-                    variants={itemVariants}
-                    onClick={() => setSelectedProduct(product)}
-                    className="group h-full overflow-hidden rounded-xl border border-border bg-card transition-all hover:border-primary/30 hover:shadow-lg"
-                  >
-                    {/* Image */}
-                    <div className="relative overflow-hidden h-40 bg-muted">
-                      <Image
-                        src={product.image}
-                        alt={product.name}
-                        fill
-                        className="object-cover group-hover:scale-110 transition-transform duration-500"
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-4 sm:p-5">
-                      <h3 className="text-base font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2 text-left">
-                        {product.name}
-                      </h3>
-                      <p className="mt-2 text-xs text-muted-foreground line-clamp-2 text-left">
-                        {product.specs}
-                      </p>
-                      <div className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary">
-                        View Details →
-                      </div>
-                    </div>
-                  </motion.button>
-                ))}
               </motion.div>
-            </motion.div>
+
+              {/* Products grid */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={selectedCategory}
+                  className="grid w-full grid-cols-1 gap-4 sm:gap-5 lg:gap-6 sm:grid-cols-2 xl:grid-cols-3"
+                  variants={containerVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  {currentProducts.map((product) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      onSelect={setSelectedProduct}
+                    />
+                  ))}
+                </motion.div>
+              </AnimatePresence>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Product Detail Modal */}
+      {/* Modal */}
       <AnimatePresence>
         {selectedProduct && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setSelectedProduct(null)}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
-          >
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl bg-card border border-border shadow-2xl"
-            >
-              {/* Close Button */}
-              <button
-                onClick={() => setSelectedProduct(null)}
-                className="absolute top-4 right-4 z-10 flex h-8 w-8 items-center justify-center rounded-lg bg-background/80 hover:bg-background transition-colors"
-              >
-                <X className="h-5 w-5" />
-              </button>
-
-              {/* Modal Content */}
-              <div>
-                {/* Image */}
-                <div className="relative h-80 w-full bg-muted overflow-hidden">
-                  <Image
-                    src={selectedProduct.image}
-                    alt={selectedProduct.name}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                </div>
-
-                {/* Details */}
-                <div className="p-6 sm:p-8 space-y-6">
-                  {/* Header */}
-                  <div>
-                    <div className="inline-block rounded-lg bg-primary/10 px-3 py-1 text-sm font-semibold text-primary mb-3">
-                      {selectedProduct.category}
-                    </div>
-                    <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
-                      {selectedProduct.name}
-                    </h1>
-                    <p className="mt-2 text-lg font-semibold text-primary">
-                      {selectedProduct.price}
-                    </p>
-                  </div>
-
-                  {/* Specifications */}
-                  <div>
-                    <h3 className="text-lg font-bold text-foreground mb-3">
-                      Specifications
-                    </h3>
-                    <p className="text-muted-foreground">
-                      {selectedProduct.specs}
-                    </p>
-                  </div>
-
-                  {/* Description */}
-                  <div>
-                    <h3 className="text-lg font-bold text-foreground mb-3">
-                      Description
-                    </h3>
-                    <p className="text-muted-foreground leading-relaxed">
-                      {selectedProduct.description}
-                    </p>
-                  </div>
-
-                  {/* Features */}
-                  <div>
-                    <h3 className="text-lg font-bold text-foreground mb-3">
-                      Features
-                    </h3>
-                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {selectedProduct.features.map((feature: string) => (
-                        <li
-                          key={feature}
-                          className="flex items-center gap-2 text-muted-foreground"
-                        >
-                          <span className="h-2 w-2 rounded-full bg-primary" />
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* CTA */}
-                  <div className="border-t border-border pt-6 flex flex-col sm:flex-row gap-3">
-                    <a
-                      href="/contact"
-                      className="flex-1 rounded-lg bg-primary px-6 py-3 text-center font-semibold text-primary-foreground transition hover:shadow-lg"
-                    >
-                      Request Quote
-                    </a>
-                    <button
-                      onClick={() => setSelectedProduct(null)}
-                      className="flex-1 rounded-lg border border-border px-6 py-3 text-center font-semibold text-foreground transition hover:bg-muted"
-                    >
-                      Close
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
+          <ProductModal
+            product={selectedProduct}
+            onClose={() => setSelectedProduct(null)}
+          />
         )}
       </AnimatePresence>
     </>

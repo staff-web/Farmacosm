@@ -5,9 +5,9 @@ import { PageHero } from "@/components/sections/page-hero";
 import { ProductsCategoryContent } from "./products-category";
 
 interface Props {
-  params: {
+  params: Promise<{
     category: string;
-  };
+  }>;
 }
 
 export async function generateStaticParams() {
@@ -23,8 +23,9 @@ export async function generateStaticParams() {
   return categories.map((category) => ({ category }));
 }
 
-export function generateMetadata({ params }: Props): Metadata {
-  const categoryTitle = (params.category || "").replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { category } = await params;
+  const categoryTitle = (category || "").replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
 
   return {
     title: `${categoryTitle} | Farmacosm Products`,
@@ -32,8 +33,9 @@ export function generateMetadata({ params }: Props): Metadata {
   };
 }
 
-export default function ProductCategoryPage({ params }: Props) {
-  const categoryTitle = (params.category || "").replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
+export default async function ProductCategoryPage({ params }: Props) {
+  const { category } = await params;
+  const categoryTitle = (category || "").replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
 
   return (
     <>
@@ -45,7 +47,7 @@ export default function ProductCategoryPage({ params }: Props) {
           title={categoryTitle}
           description={`Browse our comprehensive ${categoryTitle} products with detailed specifications.`}
         />
-        <ProductsCategoryContent category={params.category} />
+        <ProductsCategoryContent category={category} />
       </main>
       <Footer />
     </>

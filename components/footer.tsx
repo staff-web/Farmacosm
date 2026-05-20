@@ -11,12 +11,12 @@ const links = {
     { href: "/contact", label: "Contact" },
   ],
   products: [
-    { href: "/products", label: "Pharmaceutical" },
-    { href: "/products", label: "Chemical" },
-    { href: "/products", label: "Food Ingredients" },
-    { href: "/products", label: "Personal Care" },
-    { href: "/products", label: "Agro-products" },
-    { href: "/products", label: "Packaging" },
+    { href: "/products?category=pharmaceutical-health-care", label: "Pharmaceutical and health care" },
+      { href: "/products?category=personal-care-home-care", label: "Personal and home care" },
+      { href: "/products?category=food-food-ingredient", label: "Food and Food ingredient" },
+      { href: "/products?category=chemical", label: "Chemical" },
+      { href: "/products?category=agro-product", label: "Agro-product" },
+      { href: "/products?category=packaging", label: "Packaging" },
   ],
 };
 
@@ -55,9 +55,9 @@ export function Footer() {
           <div className="flex flex-col gap-6">
             <Link href="/" className="inline-block transition-transform hover:scale-[1.02]">
               <Image 
-                src="/images/farmacosmlogo.png"
-                width={200}
-                height={120}
+                src="/images/farmacosmlogo2.png"
+                width={400}
+                height={240}
                 className="h-16 md:h-20 lg:h-24 w-auto object-contain brightness-[1.1]"
                 alt="Farmacosm Logo"
               />
@@ -109,38 +109,52 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Column 4: Get in Touch */}
-          <div className="flex flex-col">
-            <p className="text-xs font-semibold uppercase tracking-widest text-primary-foreground/40">
-              Contact
-            </p>
-            <div className="mt-8 flex flex-col gap-4 text-sm leading-7">
-              <a
-                href="mailto:info@farmacosm.com"
-                className="group flex items-center gap-4 text-slate-400 transition-colors hover:text-white"
-              >
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-slate-900 border border-slate-800 transition-all group-hover:border-primary/30 group-hover:bg-slate-800">
-                  <Mail className="h-4 w-4 text-slate-500 group-hover:text-primary transition-colors" />
-                </div>
-                info@farmacosm.com
-              </a>
-              <a
-                href="tel:+85516329930"
-                className="group flex items-center gap-4 text-slate-400 transition-colors hover:text-white"
-              >
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-slate-900 border border-slate-800 transition-all group-hover:border-primary/30 group-hover:bg-slate-800">
-                  <Phone className="h-4 w-4 text-slate-500 group-hover:text-primary transition-colors" />
-                </div>
-                076 421 0661
-              </a>
-              <div className="flex items-start gap-4 text-slate-400">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-slate-900 border border-slate-800 mt-0.5">
-                  <MapPin className="h-4 w-4 text-slate-500" />
-                </div>
-                <span className="leading-relaxed">No.B6, Road 01,<br />Russey Keo, Phnom Penh</span>
-              </div>
-            </div>
-          </div>
+      {/* Column 4: Get in Touch */}
+
+  
+  {/* Column 4: Get in Touch */}
+<div className="flex flex-col">
+  <p className="text-xs font-semibold uppercase tracking-widest text-primary-foreground/40">
+    Address
+  </p>
+  <div className="mt-8 flex flex-col gap-6 text-sm">
+    
+    {/* Physical Address - Static and Muted */}
+    <div className="flex items-start gap-4 text-slate-400/70">
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-slate-900/30 border border-slate-800/50 mt-0.5">
+        <MapPin className="h-4 w-4 text-slate-600" />
+      </div>
+      <span className="leading-relaxed">
+        No.B6, Road 01,
+        <br />
+        Russey Keo, Phnom Penh
+      </span>
+    </div>
+
+    {/* More Information Link - Full Underline by Default */}
+    <Link
+      href="/contact"
+      className="group flex items-center gap-4 w-fit"
+    >
+      {/* Icon Box: Brighter than address by default to look like a button */}
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-slate-800/60 border border-slate-700/60 shadow-sm transition-all duration-300 group-hover:border-primary group-hover:bg-primary/10 group-hover:scale-105">
+        <Phone className="h-4 w-4 text-slate-400 transition-colors duration-300 group-hover:text-primary" />
+      </div>
+      
+      {/* Text with Permanent Full-Width Line */}
+      <div className="flex flex-col">
+        <span className="text-slate-300 font-medium transition-all duration-300 group-hover:text-white group-hover:translate-x-1">
+          View Contact Details 
+        </span>
+        {/* The Line: Full width by default, changes color on hover */}
+        <div className="mt-1 h-[1px] w-full bg-slate-700/50 transition-all duration-300 group-hover:bg-primary" />
+      </div>
+    </Link>
+  </div>
+
+
+
+</div>
         </div>
 
         {/* Bottom Bar */}

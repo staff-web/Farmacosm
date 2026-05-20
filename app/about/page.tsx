@@ -62,19 +62,18 @@ export default function AboutPage() {
           from compositing child blur layers against the parent gradient incorrectly.
         */}
         {/* Hero Section - No gradient, just solid dark background */}
-<section className="relative isolate overflow-hidden bg-[#0a1628] pt-32 pb-32 lg:pt-48 lg:pb-48">
-  {/* Simple background image with solid overlay - no gradient */}
-  <div className="absolute inset-0">
-    <Image
-      src="/images/team-collaboration.jpg"
-      alt="Team collaboration"
-      fill
-      className="object-cover opacity-5"
-      sizes="100vw"
-      priority
-    />
-  </div>
-          
+        <section className="relative isolate overflow-hidden bg-[#0a1628] py-16 sm:py-24 lg:py-32">
+          {/* Simple background image with solid overlay - no gradient */}
+          <div className="absolute inset-0">
+            <Image
+              src="/images/team-collaboration.jpg"
+              alt="Team collaboration"
+              fill
+              className="object-cover opacity-5"
+              sizes="100vw"
+              priority
+            />
+          </div>
 
           <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             {/* Header Content */}
@@ -84,19 +83,19 @@ export default function AboutPage() {
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               className="max-w-3xl"
             >
-              <p className="text-sm font-semibold tracking-wide text-primary">OUR FOUNDATION</p>
-              <h1 className="mt-3 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+              <p className="text-xs sm:text-sm font-semibold tracking-wide text-primary">OUR FOUNDATION</p>
+              <h1 className="mt-2 sm:mt-3 text-2xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-white">
                 Built on trust,{" "}
                 <span className="text-primary">driven by purpose</span>
               </h1>
-              <p className="mt-5 max-w-xl text-base leading-relaxed text-gray-300 lg:text-lg">
+              <p className="mt-3 sm:mt-4 max-w-xl text-sm sm:text-base leading-relaxed text-gray-300">
                 Farmacosm brings together core values of reliability, quality, and customer focus across multiple industries. Discover what drives us.
               </p>
             </motion.div>
 
             {/* Values Grid */}
             <StaggerContainer
-              className="mt-16 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4"
+              className="mt-12 sm:mt-16 grid grid-cols-1 gap-4 sm:gap-5 lg:gap-6 sm:grid-cols-2 lg:grid-cols-4"
               staggerDelay={0.1}
             >
               {values.map((val) => {
@@ -105,36 +104,19 @@ export default function AboutPage() {
                   <motion.div
                     key={val.title}
                     variants={staggerChildVariants}
-                    /*
-                      FIX: Removed `backdrop-blur-sm` — the root cause of the Chrome
-                      vs Safari rendering difference. Chrome composites backdrop-filter
-                      differently over dark gradients, producing a washed-out white bleed.
-
-                      Replaced with a solid rgba background `bg-[rgba(255,255,255,0.07)]`
-                      which renders identically in both browsers. Added a subtle
-                      `ring-1 ring-white/10` border instead of `border border-white/10`
-                      for a crisper look without compositing issues.
-                    */
-                    className="group relative overflow-hidden rounded-xl bg-[rgba(255,255,255,0.07)] ring-1 ring-white/10 p-6 transition-all duration-300 hover:bg-[rgba(255,255,255,0.12)] hover:ring-primary/30"
+                    className="group relative overflow-hidden rounded-xl bg-[rgba(255,255,255,0.07)] ring-1 ring-white/10 p-4 sm:p-5 lg:p-6 transition-all duration-300 hover:bg-[rgba(255,255,255,0.12)] hover:ring-primary/30"
                   >
                     {/* Icon */}
                     <div className="relative">
-                      {/*
-                        FIX: Removed the `blur-xl` glow div — CSS filter blur on
-                        absolutely-positioned elements inside overflow:hidden containers
-                        also triggers Chrome compositing bugs. Replaced with a simpler
-                        icon container that uses box-shadow for the glow effect via
-                        a Tailwind arbitrary value, which is GPU-safe in both browsers.
-                      */}
-                      <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary shadow-[0_0_20px_rgba(var(--primary-rgb,99,102,241),0.25)] group-hover:shadow-[0_0_28px_rgba(var(--primary-rgb,99,102,241),0.4)] transition-shadow duration-300">
-                        <Icon className="h-6 w-6" />
+                      <div className="flex h-10 sm:h-12 w-10 sm:w-12 items-center justify-center rounded-lg bg-primary/10 text-primary shadow-[0_0_20px_rgba(var(--primary-rgb,99,102,241),0.25)] group-hover:shadow-[0_0_28px_rgba(var(--primary-rgb,99,102,241),0.4)] transition-shadow duration-300">
+                        <Icon className="h-5 sm:h-6 w-5 sm:w-6" />
                       </div>
                     </div>
 
-                    <h3 className="mt-4 text-lg font-semibold text-white">
+                    <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-semibold text-white">
                       {val.title}
                     </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-gray-300">
+                    <p className="mt-2 text-xs sm:text-sm leading-relaxed text-gray-300">
                       {val.desc}
                     </p>
 
@@ -150,20 +132,20 @@ export default function AboutPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.6 }}
-              className="mt-16"
+              className="mt-12 sm:mt-16"
             >
-              <div className="flex flex-wrap items-center gap-4">
-                <p className="text-sm font-semibold text-primary">INDUSTRIES WE SERVE:</p>
-                <div className="flex flex-wrap gap-2">
+              <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
+                <p className="text-xs sm:text-sm font-semibold text-primary">INDUSTRIES WE SERVE:</p>
+                <div className="flex flex-wrap gap-2 sm:gap-3">
                   {industries.map((ind, index) => (
                     <motion.span
                       key={ind}
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: 0.7 + index * 0.05 }}
-                      className="inline-flex items-center gap-1.5 rounded-full bg-[rgba(255,255,255,0.06)] px-4 py-2 text-sm font-medium text-white ring-1 ring-white/10 hover:bg-primary/10 hover:ring-primary/30 transition-all duration-300"
+                      className="inline-flex items-center gap-1.5 rounded-full bg-[rgba(255,255,255,0.06)] px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-white ring-1 ring-white/10 hover:bg-primary/10 hover:ring-primary/30 transition-all duration-300"
                     >
-                      <CheckCircle className="h-3.5 w-3.5 text-primary" />
+                      <CheckCircle className="h-3 sm:h-3.5 w-3 sm:w-3.5 text-primary" />
                       {ind}
                     </motion.span>
                   ))}
@@ -174,18 +156,18 @@ export default function AboutPage() {
         </section>
 
         {/* Mission & Vision Section */}
-        <section className="bg-card py-24 lg:py-32">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+        <section className="bg-card py-16 sm:py-24 lg:py-32">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-2">
               <SlideInLeft>
-                <div className="rounded-2xl border border-border bg-card p-8 lg:p-10 hover:shadow-lg transition-all duration-300">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-                    <Target className="h-6 w-6 text-primary" />
+                <div className="rounded-xl sm:rounded-2xl border border-border bg-card p-5 sm:p-6 lg:p-8 hover:shadow-lg transition-all duration-300">
+                  <div className="flex h-10 sm:h-12 w-10 sm:w-12 items-center justify-center rounded-lg sm:rounded-xl bg-primary/10">
+                    <Target className="h-5 sm:h-6 w-5 sm:w-6 text-primary" />
                   </div>
-                  <h2 className="mt-6 text-2xl font-bold text-foreground">
+                  <h2 className="mt-4 sm:mt-6 text-xl sm:text-2xl font-bold text-foreground">
                     Our Mission
                   </h2>
-                  <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+                  <p className="mt-3 sm:mt-4 text-sm sm:text-base leading-relaxed text-muted-foreground">
                     To provide reliable, sustainable, and cost-effective supply
                     chain solutions, empowering businesses in Cambodia and Southeast
                     Asia to access high-quality materials through strong
@@ -195,14 +177,14 @@ export default function AboutPage() {
               </SlideInLeft>
 
               <SlideInRight>
-                <div className="rounded-2xl border border-primary/20 bg-primary/5 p-8 lg:p-10 hover:shadow-lg transition-all duration-300">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary">
-                    <Eye className="h-6 w-6 text-primary-foreground" />
+                <div className="rounded-xl sm:rounded-2xl border border-primary/20 bg-primary/5 p-5 sm:p-6 lg:p-8 hover:shadow-lg transition-all duration-300">
+                  <div className="flex h-10 sm:h-12 w-10 sm:w-12 items-center justify-center rounded-lg sm:rounded-xl bg-primary">
+                    <Eye className="h-5 sm:h-6 w-5 sm:w-6 text-primary-foreground" />
                   </div>
-                  <h2 className="mt-6 text-2xl font-bold text-foreground">
+                  <h2 className="mt-4 sm:mt-6 text-xl sm:text-2xl font-bold text-foreground">
                     Our Vision
                   </h2>
-                  <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+                  <p className="mt-3 sm:mt-4 text-sm sm:text-base leading-relaxed text-muted-foreground">
                     To become the leading supply chain partner in the region,
                     recognized for quality, innovation, and sustainability in
                     pharmaceutical, chemical, food, and personal care material
@@ -215,28 +197,28 @@ export default function AboutPage() {
         </section>
 
         {/* Industries we serve - Detailed section */}
-        <section className="bg-secondary py-24 lg:py-32">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 items-center">
+        {/* <section className="bg-secondary py-16 sm:py-24 lg:py-32">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 gap-8 sm:gap-12 lg:gap-16 lg:grid-cols-2 lg:items-center">
               <FadeUp>
-                <p className="text-sm font-semibold text-primary">Industries</p>
-                <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                <p className="text-xs sm:text-sm font-semibold text-primary">Industries</p>
+                <h2 className="mt-2 sm:mt-3 text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold tracking-tight text-foreground">
                   Related fields we serve
                 </h2>
-                <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+                <p className="mt-3 sm:mt-4 text-sm sm:text-base leading-relaxed text-muted-foreground">
                   Our expertise spans across multiple sectors, ensuring
                   specialized solutions for each industry.
                 </p>
               </FadeUp>
               <StaggerContainer
-                className="flex flex-wrap gap-3"
+                className="flex flex-wrap gap-2 sm:gap-3"
                 staggerDelay={0.06}
               >
                 {industries.map((ind) => (
                   <motion.span
                     key={ind}
                     variants={staggerChildVariants}
-                    className="rounded-full border border-primary/20 bg-card px-5 py-2.5 text-sm font-medium text-foreground transition-all duration-300 hover:border-primary hover:bg-primary/5 hover:shadow-lg"
+                    className="rounded-full border border-primary/20 bg-card px-3 sm:px-5 py-1.5 sm:py-2.5 text-xs sm:text-sm font-medium text-foreground transition-all duration-300 hover:border-primary hover:bg-primary/5 hover:shadow-lg"
                   >
                     {ind}
                   </motion.span>
@@ -244,45 +226,45 @@ export default function AboutPage() {
               </StaggerContainer>
             </div>
           </div>
-        </section>
+        </section> */}
 
         {/* Image + Team */}
-        <section className="bg-card py-24 lg:py-32">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
+        <section className="bg-card py-16 sm:py-24 lg:py-32">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 items-center gap-8 sm:gap-12 lg:gap-16 lg:grid-cols-2">
               <SlideInLeft>
                 <ParallaxImage
-                  className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl"
+                  className="relative aspect-[4/3] min-h-[240px] sm:min-h-[320px] lg:aspect-auto lg:h-[500px] rounded-xl sm:rounded-2xl overflow-hidden shadow-lg sm:shadow-xl"
                   speed={0.15}
                 >
                   <Image
                     src="/images/team-collaboration.jpg"
                     alt="Farmacosm team working together"
                     fill
-                    className="rounded-2xl object-cover transition-transform duration-700 hover:scale-105"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="rounded-xl sm:rounded-2xl object-cover transition-transform duration-700 hover:scale-105"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
                 </ParallaxImage>
               </SlideInLeft>
 
               <SlideInRight>
-                <p className="text-sm font-semibold text-primary">Our team</p>
-                <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                <p className="text-xs sm:text-sm font-semibold text-primary">Our team</p>
+                <h2 className="mt-2 sm:mt-3 text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold tracking-tight text-foreground">
                   Expert professionals, dedicated to your success.
                 </h2>
-                <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+                <p className="mt-3 sm:mt-4 text-sm sm:text-base leading-relaxed text-muted-foreground">
                   Our team combines deep technical knowledge with industry
                   experience across pharmaceutical sciences, product development,
                   regulatory compliance, and supply chain management.
                 </p>
-                <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+                <div className="mt-6 sm:mt-8 grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-3">
                   {["Technical Team", "Product Dev", "Standards & QA"].map(
                     (team) => (
                       <div
                         key={team}
-                        className="rounded-xl border border-border bg-secondary p-4 text-center hover:border-primary/30 transition-all duration-300"
+                        className="rounded-lg sm:rounded-xl border border-border bg-secondary p-3 sm:p-4 text-center hover:border-primary/30 transition-all duration-300"
                       >
-                        <p className="text-sm font-semibold text-foreground">
+                        <p className="text-xs sm:text-sm font-semibold text-foreground">
                           {team}
                         </p>
                       </div>

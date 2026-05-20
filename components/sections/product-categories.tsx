@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import {
-  FadeUp,
   StaggerContainer,
   staggerChildVariants,
 } from "@/components/scroll-animations";
@@ -13,179 +12,138 @@ import { useEffect, useRef, useState } from "react";
 
 const categories = [
   {
-    title: "Pharmaceutical & Healthcare",
+    title: "Pharmaceutical and health care",
+    slug: "pharmaceutical-health-care",
     image: "/images/pharma-materials.jpg",
     gradient: "from-blue-600/90 to-indigo-700/90",
-    textColor: "text-white",
   },
   {
-    title: "Chemical Products",
-    image: "/images/chemical-supply.jpg",
-    gradient: "from-teal-600/90 to-emerald-700/90",
-    textColor: "text-white",
-  },
-  {
-    title: "Food & Ingredients",
-    image: "/images/food-ingredients.jpg",
-    gradient: "from-amber-600/90 to-orange-700/90",
-    textColor: "text-white",
-  },
-  {
-    title: "Personal Care",
+    title: "Personal and home care",
+    slug: "personal-care-home-care",
     image: "/images/cosmetic-care.jpg",
     gradient: "from-pink-600/90 to-rose-700/90",
-    textColor: "text-white",
   },
   {
-    title: "Agro-products",
+    title: "Food and Food ingredient",
+    slug: "food-food-ingredient",
+    image: "/images/food-ingredients.jpg",
+    gradient: "from-amber-600/90 to-orange-700/90",
+  },
+  {
+    title: "Chemical",
+    slug: "chemical",
+    image: "/images/chemical-supply.jpg",
+    gradient: "from-teal-600/90 to-emerald-700/90",
+  },
+  {
+    title: "Agro-product",
+    slug: "agro-product",
     image: "/images/agro-product.jpg",
     gradient: "from-green-600/90 to-lime-700/90",
-    textColor: "text-white",
   },
   {
     title: "Packaging",
+    slug: "packaging",
     image: "/images/packaging.jpg",
     gradient: "from-purple-600/90 to-violet-700/90",
-    textColor: "text-white",
   },
 ];
 
 export function ProductCategories() {
   const sectionRef = useRef<HTMLElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
-  const [titleColor, setTitleColor] = useState("text-black");
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsVisible(entry.isIntersecting);
-        if (entry.isIntersecting) {
-          setTimeout(() => {
-            setTitleColor("text-blue-600");
-          }, 500);
-        } else {
-          setTitleColor("text-black");
-        }
-      },
-      {
-        threshold: 0.3,
-        rootMargin: "100px 0px",
-      }
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0.1, rootMargin: "100px 0px" }
     );
+    if (sectionRef.current) observer.observe(sectionRef.current);
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    // Setup parallax effect for images only
     const handleScroll = () => {
       if (!sectionRef.current) return;
-
-      const sectionRect = sectionRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      const sectionTop = sectionRect.top;
-      const sectionBottom = sectionRect.bottom;
-
-      // Only apply parallax when section is in viewport
-      if (sectionTop < windowHeight && sectionBottom > 0) {
-        const cards = document.querySelectorAll('.parallax-card');
-        cards.forEach((card) => {
-          const rect = card.getBoundingClientRect();
-          const cardTop = rect.top;
-          const cardHeight = rect.height;
-
-          // Calculate parallax effect
-          const speed = 0.12; // Adjust this value to control parallax speed
-          const yPos = -((cardTop * speed) / 2);
-
-          // Apply transform only to the image container, not the whole card
-          const imageContainer = card.querySelector('.parallax-image-container');
-          if (imageContainer) {
-            (imageContainer as HTMLElement).style.transform = `translateY(${yPos}px)`;
-          }
+      const { top, bottom } = sectionRef.current.getBoundingClientRect();
+      if (top < window.innerHeight && bottom > 0) {
+        document.querySelectorAll(".parallax-card").forEach((card) => {
+          const cardTop = card.getBoundingClientRect().top;
+          const yPos = -((cardTop * 0.12) / 2);
+          const img = card.querySelector(
+            ".parallax-image-container"
+          ) as HTMLElement;
+          if (img) img.style.transform = `translateY(${yPos}px)`;
         });
       }
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Initial call
-
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
     return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
-      }
-      window.removeEventListener('scroll', handleScroll);
+      if (sectionRef.current) observer.unobserve(sectionRef.current);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
   return (
     <section
       ref={sectionRef}
-      className="bg-secondary py-24 lg:py-32 relative overflow-hidden"
+      className="relative overflow-hidden bg-secondary py-16 sm:py-24 lg:py-32"
     >
-      {/* Subtle background pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-indigo-500/10" />
-      </div>
+      {/* Background accents */}
+      <div className="absolute top-0 left-0 w-72 h-72 bg-blue-500/5 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-indigo-500/5 rounded-full translate-x-1/3 translate-y-1/3 blur-3xl pointer-events-none" />
 
-      {/* Animated background elements */}
-      <div className="absolute top-0 left-0 w-72 h-72 bg-blue-500/5 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-indigo-500/5 rounded-full translate-x-1/3 translate-y-1/3 blur-3xl" />
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
-      <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
+        {/* Header */}
         <div
-          className={`transition-all duration-1000 ease-out ${isVisible
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-10"
-            }`}
+          className={`transition-all duration-1000 ease-out ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+          }`}
         >
-          <div className="flex items-end justify-between">
+          <div className="flex items-start justify-between gap-4">
             <div>
-              <p className="text-sm font-semibold text-blue-600 uppercase tracking-wider">
+              <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-wider">
                 Product groups
               </p>
-              <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
-                <span className={`transition-colors duration-1000 delay-300 ${titleColor}`}>
-                  Six categories
-                </span>
-                <br />
-                <span className="text-foreground mt-2 block">
-                  Personal care and Home care
-                </span>
+              <h2 className="mt-2 sm:mt-3 text-2xl sm:text-3xl font-bold tracking-tight text-foreground lg:text-4xl xl:text-5xl">
+                One Trusted Source
               </h2>
-              <p className="mt-4 text-muted-foreground max-w-2xl text-lg">
+              <p className="mt-3 sm:mt-4 text-sm sm:text-base text-muted-foreground max-w-2xl">
                 Comprehensive raw material solutions across diverse industries,
                 backed by quality assurance and reliable supply chains.
               </p>
             </div>
+            {/* Desktop-only link */}
             <Link
               href="/products"
-              className="hidden items-center gap-2 text-sm font-semibold text-blue-600 transition-all hover:text-blue-800 hover:gap-3 hover:scale-105 md:flex group"
+              className="hidden md:flex items-center gap-2 shrink-0 text-sm font-semibold text-primary transition-all hover:opacity-70 hover:gap-3 group"
             >
-              View all categories
+              View all products
               <ArrowUpRight className="h-4 w-4 transition-transform group-hover:rotate-45" />
             </Link>
           </div>
         </div>
 
+        {/* Grid — 1 col mobile, 2 col tablet, 3 col desktop */}
         <StaggerContainer
-          className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3"
+          className="mt-8 sm:mt-12 lg:mt-16 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6"
           staggerDelay={0.08}
         >
-          {categories.map((cat, index) => (
+          {categories.map((cat) => (
             <motion.div
               key={cat.title}
               variants={staggerChildVariants}
-              whileHover={{ y: -8 }}
-              className="transition-all duration-500 parallax-card"
+              whileHover={{ y: -6 }}
+              className="parallax-card transition-all duration-500"
             >
               <Link
-                href="/products"
-                className="group block overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500"
+                href={`/products?category=${cat.slug}`}
+                className="group block overflow-hidden rounded-2xl sm:rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500"
               >
-                <div className="relative aspect-[4/3] rounded-3xl overflow-hidden">
-                  {/* Image container with parallax effect */}
+                {/* aspect-[4/3] on mobile keeps cards compact; can loosen on larger screens */}
+                <div className="relative aspect-[4/3] overflow-hidden rounded-2xl sm:rounded-3xl">
+
+                  {/* Parallax image */}
                   <div className="parallax-image-container absolute inset-0 transition-transform duration-100 ease-out">
                     <Image
                       src={cat.image || "/placeholder.svg"}
@@ -193,42 +151,34 @@ export function ProductCategories() {
                       fill
                       className="object-cover transition-all duration-1000 ease-out group-hover:scale-110"
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      priority={false}
                     />
                   </div>
 
-                  {/* Fixed overlays (stay in place, no parallax) */}
+                  {/* Overlays */}
                   <div className="absolute inset-0">
-                    {/* Gradient overlay */}
                     <div
                       className={`absolute inset-0 bg-gradient-to-t ${cat.gradient} via-black/40 to-transparent opacity-70 group-hover:opacity-80 transition-opacity duration-500`}
                     />
-
-                    {/* Top gradient for better text contrast */}
                     <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
-
-                    {/* Semi-transparent overlay on hover */}
                     <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors duration-500" />
 
-                    {/* Fixed text container (no parallax) */}
-                    <div className="absolute inset-x-0 bottom-0 p-8">
+                    {/* Text — smaller padding on mobile */}
+                    <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6 lg:p-8">
                       <div className="relative">
-                        {/* Text background for better readability */}
-                        <div className="absolute -inset-4 bg-gradient-to-t from-black/60 via-black/40 to-transparent backdrop-blur-sm rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                        <p className={`relative text-xl font-bold ${cat.textColor} drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] tracking-tight leading-tight`}>
+                        <div className="absolute -inset-3 sm:-inset-4 bg-gradient-to-t from-black/60 via-black/40 to-transparent backdrop-blur-sm rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        <p className="relative text-base sm:text-lg lg:text-xl font-bold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] tracking-tight leading-tight">
                           {cat.title}
                         </p>
                       </div>
                     </div>
 
-                    {/* Fixed hover indicator (no parallax) */}
-                    <div className="absolute right-6 top-6 flex h-12 w-12 items-center justify-center rounded-full bg-white/20 backdrop-blur-md transition-all duration-500 transform translate-x-3 -translate-y-3 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:bg-white/30 group-hover:scale-110">
-                      <ArrowUpRight className="h-5 w-5 text-white" />
+                    {/* Arrow badge — smaller on mobile */}
+                    <div className="absolute right-3 top-3 sm:right-5 sm:top-5 flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-white/20 backdrop-blur-md transition-all duration-500 transform translate-x-2 -translate-y-2 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:bg-white/30 group-hover:scale-110">
+                      <ArrowUpRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" />
                     </div>
 
-                    {/* Fixed shine effect (no parallax) */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1200 ease-out" />
+                    {/* Shine sweep */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-[1200ms] ease-out" />
                   </div>
                 </div>
               </Link>
@@ -236,21 +186,35 @@ export function ProductCategories() {
           ))}
         </StaggerContainer>
 
+        {/* Mobile "view all" link (shown below grid, hidden on md+) */}
+        {/* <div className="mt-6 text-center md:hidden">
+          <Link
+            href="/products"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-primary"
+          >
+            View all products
+            <ArrowUpRight className="h-4 w-4" />
+          </Link>
+        </div> */}
+
+        {/* CTA */}
         <div
-          className={`mt-12 text-center bg-blue transition-all duration-1000 delay-500 ease-out ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-            }`}
+          className={`mt-10 sm:mt-12 text-center transition-all duration-1000 delay-500 ease-out ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+          }`}
         >
           <Link
             href="/products"
-            className="inline-flex items-center gap-3 px-10 py-4 rounded-full bg-blue-600 text-white font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 hover:shadow-2xl hover:scale-105 active:scale-95 shadow-lg"
+            className="inline-flex items-center gap-2 sm:gap-3 px-7 sm:px-10 py-3 sm:py-4 rounded-full bg-primary text-primary-foreground text-sm sm:text-base font-semibold transition-all duration-300 hover:shadow-2xl hover:scale-105 active:scale-95 shadow-lg"
           >
             Explore all categories
-            <ArrowUpRight className="h-5 w-5 transition-transform group-hover:rotate-45" />
+            <ArrowUpRight className="h-4 w-4 sm:h-5 sm:w-5" />
           </Link>
-          <p className="mt-6 text-sm text-muted-foreground font-medium">
+          <p className="mt-4 sm:mt-6 text-xs sm:text-sm text-muted-foreground font-medium">
             Over 500+ products across 6 categories
           </p>
         </div>
+
       </div>
     </section>
   );

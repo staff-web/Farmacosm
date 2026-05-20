@@ -25,8 +25,8 @@ export default function ContactPage() {
         />
 
         {/* Content Section */}
-        <section className="relative bg-background py-20 sm:py-24 lg:py-32">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <section className="relative bg-background py-16 sm:py-24 lg:py-32">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <ContactPageClient />
           </div>
         </section>

@@ -17,25 +17,28 @@ const heroImages = [
     alt: "Pharmaceutical materials and compounds",
     title: "Quality Products",
     subtitle: "Premium pharmaceutical and chemical supplies",
+    position: "object-center", 
   },
   {
     src: "/images/hero2.png",
     alt: "Modern pharmaceutical laboratory",
     title: "Advanced Research",
     subtitle: "Cutting-edge pharmaceutical solutions",
+    position: "object-[center_20%]", 
   },
-  
   {
     src: "/images/hero3.png",
     alt: "Chemical supply chain solutions",
     title: "Reliable Supply Chain",
     subtitle: "Comprehensive logistics and warehousing services",
+    position: "object-[center_15%]", 
   },
   {
-    src: "/images/hero4.png", // Make sure this file exists in your public/images folder
+    src: "/images/hero4.png",
     alt: "Distribution and logistics center",
     title: "Global Distribution",
     subtitle: "Efficient delivery across Southeast Asia",
+    position: "object-[center_25%]", 
   },
 ];
 
@@ -51,7 +54,6 @@ export function Hero() {
 
   const overlayOpacity = useTransform(scrollYProgress, [0, 0.5], [0.3, 0.5]);
 
-  // Auto-advance carousel
   useEffect(() => {
     if (!autoplay) return;
     const interval = setInterval(() => {
@@ -71,30 +73,29 @@ export function Hero() {
   };
 
   return (
-    <section
-      ref={containerRef}
-      className="relative h-screen min-h-[700px] overflow-hidden"
-      style={{ position: "relative" }}
-    >
+<section
+  ref={containerRef}
+  className="relative w-full h-svh overflow-hidden lg:h-screen lg:min-h-[700px]"
+>
       {/* Image Carousel */}
       <AnimatePresence initial={false}>
-  <motion.div
-    key={currentIndex}
-    initial={{ x: "100%" }}
-    animate={{ x: 0 }}
-    exit={{ x: "-100%" }}
-    transition={{ duration: 0.8, ease: "easeInOut" }}
-    className="absolute inset-0"
-  >
-          <Image
+        <motion.div
+          key={currentIndex}
+          initial={{ x: "100%" }}
+          animate={{ x: 0 }}
+          exit={{ x: "-100%" }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+          className="absolute inset-0"
+        >
+ <Image
   src={heroImages[currentIndex].src}
   alt={heroImages[currentIndex].alt}
   fill
   priority={currentIndex === 0}
   sizes="100vw"
-  quality={100}
-  unoptimized // Bypasses Next.js image optimization
-  className="object-cover"
+  quality={90}
+  // This is the fix:
+  className="object-cover object-[center_top]" 
 />
         </motion.div>
       </AnimatePresence>
@@ -106,59 +107,55 @@ export function Hero() {
       />
 
       {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/50 to-black/70" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-black/75 sm:from-black/20 sm:via-black/45 sm:to-black/65" />
 
-      {/* Decorative vertical line */}
+      {/* Decorative centre line */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,transparent_49.5%,rgba(255,255,255,0.04)_49.5%,rgba(255,255,255,0.04)_50.5%,transparent_50.5%)]" />
 
       {/* Content */}
-      <div className="relative z-10 flex h-full flex-col justify-center">
+      <div className="relative z-10 flex h-full flex-col justify-center sm:justify-center">
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
             className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/20 bg-primary-foreground/10 px-4 py-1.5 backdrop-blur-sm"
           >
             <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-            <span className="text-xs font-medium text-white">
-              Trusted supply chain partner in Southeast Asia
+            <span className="text-xs font-medium text-primary-foreground/90">
+              Your Trust Supply Chain Partner 
             </span>
           </motion.div>
 
-          {/* Heading */}
-          <motion.h1
+          {/* <motion.h1
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.4 }}
-            className="mt-8 max-w-3xl text-5xl font-bold leading-[1.08] tracking-tight text-white sm:text-6xl lg:text-7xl"
+            className="max-w-3xl font-bold leading-[1.08] tracking-tight text-white text-3xl sm:text-5xl lg:text-7xl"
           >
             Together <span className="text-primary">for</span>
             <br />
             better.
-          </motion.h1>
+          </motion.h1> */}
 
-          {/* Description */}
           <motion.p
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.6 }}
-            className="mt-6 max-w-lg text-base text-white/90 lg:text-lg"
+            className="mt-4 max-w-lg text-sm text-white/90 sm:mt-6 sm:text-base lg:text-lg"
           >
             We deliver reliable supply chain solutions for industrial and specialty ingredients.
           </motion.p>
 
-          {/* CTAs */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.8 }}
-            className="mt-10 flex flex-wrap gap-4"
+            className="mt-6 flex flex-wrap gap-3 sm:mt-10 sm:gap-4"
           >
             <Link
               href="/products"
-              className="group flex items-center gap-2 rounded-lg bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/30 transition hover:shadow-xl"
+              className="group flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/30 transition hover:shadow-xl sm:px-6 sm:py-3.5"
             >
               Explore Products
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -166,59 +163,53 @@ export function Hero() {
 
             <Link
               href="/about"
-              className="rounded-lg border border-primary-foreground/20 bg-primary-foreground/5 px-6 py-3.5 text-sm font-semibold text-primary-foreground backdrop-blur-sm transition hover:bg-primary-foreground/10"
+              className="rounded-lg border border-primary-foreground/20 bg-primary-foreground/5 px-5 py-3 text-sm font-semibold text-primary-foreground backdrop-blur-sm transition hover:bg-primary-foreground/10 sm:px-6 sm:py-3.5"
             >
               About Us
             </Link>
           </motion.div>
-
         </div>
       </div>
 
       {/* Carousel Controls */}
-      <div className="absolute bottom-8 right-8 z-20 flex items-center gap-4">
-        {/* Indicators */}
-        <div className="flex gap-2">
+      <div className="absolute bottom-4 right-4 z-20 flex items-center gap-3 sm:bottom-8 sm:right-8 sm:gap-4">
+        <div className="flex gap-1.5 sm:gap-2">
           {heroImages.map((_, index) => (
             <button
               key={index}
-              onClick={() => {
-                setCurrentIndex(index);
-                setAutoplay(false);
-              }}
-              className={`h-2 rounded-full transition-all ${
+              onClick={() => { setCurrentIndex(index); setAutoplay(false); }}
+              className={`h-1.5 rounded-full transition-all ${
                 index === currentIndex
-                  ? "w-6 bg-primary"
-                  : "w-2 bg-white/30 hover:bg-white/50"
+                  ? "w-5 bg-primary sm:w-6"
+                  : "w-1.5 bg-white/30 hover:bg-white/50"
               }`}
               aria-label={`Go to slide ${index + 1}`}
             />
           ))}
         </div>
 
-        {/* Navigation Buttons */}
         <button
           onClick={handlePrev}
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm transition hover:bg-white/20"
+          className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm transition hover:bg-white/20 sm:h-10 sm:w-10"
           aria-label="Previous slide"
         >
-          <ChevronLeft className="h-5 w-5 text-white" />
+          <ChevronLeft className="h-4 w-4 text-white sm:h-5 sm:w-5" />
         </button>
         <button
           onClick={handleNext}
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm transition hover:bg-white/20"
+          className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm transition hover:bg-white/20 sm:h-10 sm:w-10"
           aria-label="Next slide"
         >
-          <ChevronRight className="h-5 w-5 text-white" />
+          <ChevronRight className="h-4 w-4 text-white sm:h-5 sm:w-5" />
         </button>
       </div>
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator — desktop only */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 lg:block"
       >
         <motion.div
           animate={{ y: [0, 8, 0] }}

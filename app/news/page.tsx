@@ -16,7 +16,9 @@ export default function NewsPage() {
       <main>
         <PageHero
           title="Farmacosm News"
-          subtitle="Industry insights and company updates" imageSrc={"/images/blog-pharma.jpg"}        />
+          subtitle="Industry insights and company updates"
+          imageSrc="/images/blog-pharma.jpg"
+        />
         <NewsPageClient />
         <CTA />
       </main>
