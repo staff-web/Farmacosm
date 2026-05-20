@@ -15,9 +15,10 @@ export default function NewsPage() {
       <Navigation />
       <main>
         <PageHero
-          title="Farmacosm News"
-          subtitle="Industry insights and company updates"
+          title="pageHero.news.title"
+          subtitle="pageHero.news.subtitle"
           imageSrc="/images/blog-pharma.jpg"
+          useTranslation={true}
         />
         <NewsPageClient />
         <CTA />

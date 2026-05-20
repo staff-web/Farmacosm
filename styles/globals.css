@@ -92,3 +92,9 @@ body {
     @apply bg-background text-foreground;
   }
 }
+/* In your global.css or component styles */
+@media (max-width: 640px) {
+  .hero-image-mobile {
+    transform: scale(1.1);
+  }
+}

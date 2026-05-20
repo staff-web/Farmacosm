@@ -1,0 +1,185 @@
+{
+  "common": {
+    "language": "Language",
+    "english": "English",
+    "khmer": "khmer",
+    "toggleLanguage": "Toggle Language"
+  },
+  "navigation": {
+    "home": "Home",
+    "about": "About",
+    "products": "Products",
+    "services": "Services",
+    "news": "News",
+    "contact": "Contact"
+  },
+  "home": {
+    "title": "Welcome to Farmacosm",
+    "description": "Premium pharmaceutical solutions",
+    "hero": {
+      "badge": "Your Trust Supply Chain Partner",
+      "tagline": "We deliver reliable supply chain solutions for industrial and specialty ingredients.",
+      "exploreProducts": "Explore Products",
+      "aboutUs": "About Us",
+      "slide1Title": "Quality Products",
+      "slide1Subtitle": "Premium pharmaceutical and chemical supplies",
+      "slide2Title": "Advanced Research",
+      "slide2Subtitle": "Cutting-edge pharmaceutical solutions",
+      "slide3Title": "Reliable Supply Chain",
+      "slide3Subtitle": "Comprehensive logistics and warehousing services",
+      "slide4Title": "Global Distribution",
+      "slide4Subtitle": "Efficient delivery across Southeast Asia"
+    },
+    "whatWeDo": {
+      "title": "What We Do",
+      "description": "At Farmacosm, we specialize in providing high-quality pharmaceutical and chemical products with excellence in service and reliability.",
+      "label": "We Offer"
+    },
+    "cta": {
+      "title": "Ready to partner with us?",
+      "description": "Let us help you source high-quality materials for your business.",
+      "button": "Get in touch"
+    }
+  },
+  "products": {
+    "title": "Our Products",
+    "description": "Browse our comprehensive product catalog with detailed specifications and easy filtering by category.",
+    "filterByCategory": "Filter by Category",
+    "allCategories": "All Categories",
+    "noProducts": "No products found",
+    "price": "Price",
+    "addToCart": "Add to Cart",
+    "viewDetails": "View Details →",
+    "contactForInfo": "Contact for More Info",
+    "available": "product available",
+    "availablePlural": "products available",
+    "productGroups": "Product groups",
+    "oneTrustedSource": "One Trusted Source",
+    "trustedDesc": "Comprehensive raw material solutions across diverse industries, backed by quality assurance and reliable supply chains.",
+    "viewAll": "View all products",
+    "exploreAll": "Explore all categories",
+    "productCount": "Over 500+ products across 6 categories",
+    "categories": {
+      "pharma": "Pharmaceutical and health care",
+      "personalCare": "Personal and home care",
+      "food": "Food and Food ingredient",
+      "chemical": "Chemical",
+      "agro": "Agro-product",
+      "packaging": "Packaging"
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "address": "Address",
+    "hours": "Hours",
+    "callUs": "Call Us",
+    "clickToCall": "Click to call",
+    "quickContact": "Quick Contact",
+    "sendMessage": "Send us a Message",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "message": "Message",
+    "submit": "Submit"
+  },
+  "footer": {
+    "copyright": "All rights reserved",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "company": "Company",
+    "products": "Products",
+    "address": "Address",
+    "viewContact": "View Contact Details",
+    "tagline": "Together for better"
+  },
+  "services": {
+    "sectionLabel": "Our Services",
+    "comprehensiveSolutions": "Comprehensive Solutions",
+    "comprehensiveDesc": "We offer specialized services across manufacturing, design, research, and regional distribution to meet your business needs.",
+    "learnMore": "Learn More & Contact",
+    "qualityTitle": "Quality Guaranteed",
+    "qualityDesc": "Every product meets international quality standards and regulatory requirements.",
+    "expertTitle": "Expert Team",
+    "expertDesc": "Our scientists and engineers bring decades of combined experience to your projects.",
+    "partnerTitle": "Partnership Focus",
+    "partnerDesc": "We work as your partner, invested in your success and long-term growth.",
+    "supplyChain": {
+      "title": "Supply Chain",
+      "description": "Comprehensive supply of raw materials, equipment, and packaging solutions for the pharmaceutical, chemical, food, cosmetic, home care, and personal care industries."
+    },
+    "productDev": {
+      "title": "Product Development",
+      "description": "OEM/ODM and R&D service to bring your product concept to market with expert formulation."
+    },
+    "oem": {
+      "title": "OEM / ODM Services",
+      "description": "Original Equipment & Design Manufacturing",
+      "details": "We combine OEM scale with ODM creativity — so whether you bring us your specs or need us to design the product from scratch, we own every step from formulation to finished goods."
+    },
+    "rd": {
+      "title": "R&D and Product Analysis",
+      "description": "Research & Development",
+      "details": "Advance your pipeline with our research and development partnerships. We invest in cutting-edge science to create breakthrough pharmaceutical and nutraceutical solutions."
+    },
+    "warehouse": {
+      "title": "Distribution & Warehousing",
+      "description": "Regional Storage & Distribution",
+      "details": "Our distribution warehouse extends our logistics capabilities — offering dedicated storage, pick-and-pack, and last-mile distribution across Southeast Asia, purpose-built for pharmaceutical and specialty chemical supply chains."
+    }
+  },
+  "about": {
+    "foundation": "OUR FOUNDATION",
+    "heroTitle1": "Built on trust,",
+    "heroTitle2": "driven by purpose",
+    "heroDesc": "Farmacosm brings together core values of reliability, quality, and customer focus across multiple industries. Discover what drives us.",
+    "industriesLabel": "INDUSTRIES WE SERVE:",
+    "missionTitle": "Our Mission",
+    "missionDesc": "To provide reliable, sustainable, and cost-effective supply chain solutions, empowering businesses in Cambodia and Southeast Asia to access high-quality materials through strong partnerships and a customer-first approach.",
+    "visionTitle": "Our Vision",
+    "visionDesc": "To become the leading supply chain partner in the region, recognized for quality, innovation, and sustainability in pharmaceutical, chemical, food, and personal care material sourcing.",
+    "teamLabel": "Our team",
+    "teamTitle": "Expert professionals, dedicated to your success.",
+    "teamDesc": "Our team combines deep technical knowledge with industry experience across pharmaceutical sciences, product development, regulatory compliance, and supply chain management.",
+    "values": {
+      "reliability": "Reliability",
+      "reliabilityDesc": "Consistent quality and timely delivery across every order.",
+      "customerFirst": "Customer First",
+      "customerFirstDesc": "Your concerns are our priorities. Always.",
+      "quality": "Quality Standards",
+      "qualityDesc": "GMP, ISO, and HACCP compliant sourcing and processes.",
+      "sustainability": "Sustainability",
+      "sustainabilityDesc": "Responsible sourcing practices for a better future."
+    },
+    "teams": {
+      "technical": "Technical Team",
+      "productDev": "Product Dev",
+      "standards": "Standards & QA"
+    }
+  },
+  "news": {
+    "title": "Farmacosm News",
+    "subtitle": "Industry insights and company updates",
+    "latestUpdates": "Latest Updates",
+    "sectionTitle": "Farmacosm News",
+    "sectionDesc": "Industry insights, market trends, and company updates from the pharmaceutical and chemical supply chain leaders.",
+    "moreNews": "More News",
+    "browseCategory": "Browse by Category"
+  },
+  "pageHero": {
+    "services": {
+      "subtitle": "Our services",
+      "title": "How we work with you.",
+      "description": "End-to-end supply chain solutions from product development to regulatory compliance, designed to help your business succeed in the region."
+    },
+    "contact": {
+      "subtitle": "Contact",
+      "title": "Get in touch.",
+      "description": "Have a question or need a quote? Reach out and our team will respond within one business day."
+    },
+    "news": {
+      "subtitle": "News",
+      "title": "Farmacosm News",
+      "description": "Industry insights and company updates"
+    }
+  }
+}

@@ -5,36 +5,42 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { LanguageSwitcher } from "@/components/language-switcher";
 
-const navLinks = [
-  { href: "/", label: "Home" },
+// Updated to accept 't' and accurately map your product and service keys
+const getNavLinks = (t: (key: string) => string) => [
+  { href: "/", label: t("navigation.home") },
   {
     href: "/products",
-    label: "Product",
+    label: t("navigation.products"),
     subLinks: [
-      { href: "/products?category=pharmaceutical-health-care", label: "Pharmaceutical and health care" },
-      { href: "/products?category=personal-care-home-care", label: "Personal and home care" },
-      { href: "/products?category=food-food-ingredient", label: "Food and Food ingredient" },
-      { href: "/products?category=chemical", label: "Chemical" },
-      { href: "/products?category=agro-product", label: "Agro-product" },
-      { href: "/products?category=packaging", label: "Packaging" },
+      { href: "/products?category=pharmaceutical-health-care", label: t("products.categories.pharma") },
+      { href: "/products?category=personal-care-home-care", label: t("products.categories.personalCare") },
+      { href: "/products?category=food-food-ingredient", label: t("products.categories.food") },
+      { href: "/products?category=chemical", label: t("products.categories.chemical") },
+      { href: "/products?category=agro-product", label: t("products.categories.agro") },
+      { href: "/products?category=packaging", label: t("products.categories.packaging") },
     ],
   },
   {
     href: "/services",
-    label: "Service",
+    label: t("navigation.services"),
+    // You can apply the same pattern to services if you have translation keys for them!
     subLinks: [
       { href: "/services?service=oem-odm", label: "OEM / ODM" },
       { href: "/services?service=rd", label: "R&D and Product Analysis" },
       { href: "/services?service=warehouse", label: "Distribution & Warehousing" },
     ],
   },
-  { href: "/about", label: "About Us" },
-  { href: "/news", label: "News" },
-  { href: "/contact", label: "Contact" },
+  { href: "/about", label: t("navigation.about") },
+  { href: "/news", label: t("navigation.news") },
+  { href: "/contact", label: t("navigation.contact") },
 ];
 
 export function Navigation() {
+  const { t } = useLanguage();
+  const navLinks = getNavLinks(t); // Dynamically builds translated links on render
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -54,7 +60,6 @@ export function Navigation() {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
-      // Add a class to body for better z-index management
       document.body.style.position = "fixed";
       document.body.style.width = "100%";
     } else {
@@ -80,19 +85,19 @@ export function Navigation() {
             : "bg-transparent py-4"
         }`}
       >
-        <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          {/* Logo Section - Larger and more visible */}
+        <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8 gap-4">
+          {/* Logo Section */}
           <Link href="/" className="flex items-center shrink-0">
             <motion.img
               src="/images/farmacosmlogo2.png"
               animate={{ scale: scrolled ? 0.9 : 1 }}
-              className="h-16 w-auto object-contain sm:h-20 md:h-24"
+              className="h-[5.5rem] w-auto object-contain  md:h-25 lg:h-28"
               alt="Farmacosm Logo"
             />
           </Link>
 
-          {/* Desktop Links */}
-          <div className="hidden lg:flex lg:gap-x-1">
+          {/* Desktop Links and Language Switcher */}
+          <div className="hidden lg:flex lg:gap-x-1 lg:items-center">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
 
@@ -164,22 +169,33 @@ export function Navigation() {
                 </div>
               );
             })}
+            
+            {/* Language Switcher - Desktop */}
+            <div className="ml-2 lg:ml-4 pl-2 lg:pl-4 border-l border-primary/20">
+              <LanguageSwitcher />
+            </div>
           </div>
 
-          {/* Mobile Toggle Button */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className={`lg:hidden p-2 rounded-md transition-colors relative z-50 ${
-              scrolled ? "text-slate-900 hover:bg-slate-100" : "text-white hover:bg-white/10"
-            }`}
-            aria-label="Menu"
-          >
-            {isOpen ? <X className="h-7 w-7 sm:h-8 sm:w-8" /> : <Menu className="h-7 w-7 sm:h-8 sm:w-8" />}
-          </button>
+          {/* Mobile Controls - Menu and Language Switcher */}
+          <div className="lg:hidden flex items-center gap-2 sm:gap-3">
+            <div className="scale-75 sm:scale-90">
+              <LanguageSwitcher />
+            </div>
+
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className={`p-2 rounded-md transition-colors relative z-50 ${
+                scrolled ? "text-slate-900 hover:bg-slate-100" : "text-white hover:bg-white/10"
+              }`}
+              aria-label="Menu"
+            >
+              {isOpen ? <X className="h-7 w-7 sm:h-8 sm:w-8" /> : <Menu className="h-7 w-7 sm:h-8 sm:w-8" />}
+            </button>
+          </div>
         </nav>
       </motion.header>
 
-      {/* Mobile Menu - FIXED with higher z-index */}
+      {/* Mobile Menu */}
       <AnimatePresence>
         {isOpen && (
           <>
@@ -191,7 +207,8 @@ export function Navigation() {
               onClick={() => setIsOpen(false)}
               className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] lg:hidden"
             />
-            {/* Full Screen Drawer - takes entire screen with higher z-index */}
+            
+            {/* Full Screen Drawer */}
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
@@ -200,13 +217,15 @@ export function Navigation() {
               className="fixed inset-y-0 right-0 z-[101] w-full bg-white shadow-2xl lg:hidden overflow-y-auto"
             >
               <div className="flex flex-col min-h-full">
-                {/* Header with logo and close button */}
                 <div className="flex items-center justify-between p-4 sm:p-6 border-b border-slate-100 bg-white">
-                  <img 
-                    src="/images/farmacosmlogo.png" 
-                    className="h-12 w-auto object-contain sm:h-14" 
-                    alt="Farmacosm Logo" 
-                  />
+                  <Link href="/" className="flex items-center shrink-0">
+                    <motion.img
+                      src="/images/farmacosmlogo2.png"
+                      animate={{ scale: scrolled ? 0.9 : 1 }}
+                      className="h-[5.5rem] w-auto object-contain md:h-25 lg:h-28"
+                      alt="Farmacosm Logo"
+                    />
+                  </Link>
                   <button 
                     onClick={() => setIsOpen(false)} 
                     className="p-2 -mr-2 text-slate-400 hover:text-slate-600 transition-colors"
@@ -216,7 +235,7 @@ export function Navigation() {
                   </button>
                 </div>
                 
-                {/* Scrollable Navigation Links - with enough padding and larger text */}
+                {/* Scrollable Navigation Links */}
                 <div className="flex-1 overflow-y-auto py-4 px-4 sm:px-6">
                   <div className="flex flex-col gap-y-1">
                     {navLinks.map((link) => {
@@ -276,10 +295,9 @@ export function Navigation() {
                   </div>
                 </div>
                 
-                {/* Optional: Footer with contact info */}
                 <div className="p-4 sm:p-6 border-t border-slate-100 bg-slate-50">
                   <p className="text-sm text-slate-500 text-center">
-                    © Farmacosm - Your Trust Supply Chain Partner
+                    © Farmacosm - Your Trusted Supply Chain Partner
                   </p>
                 </div>
               </div>

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { ArrowUpRight } from "lucide-react";
 import {
   StaggerContainer,
@@ -10,48 +11,49 @@ import {
 } from "@/components/scroll-animations";
 import { useEffect, useRef, useState } from "react";
 
-const categories = [
-  {
-    title: "Pharmaceutical and health care",
-    slug: "pharmaceutical-health-care",
-    image: "/images/pharma-materials.jpg",
-    gradient: "from-blue-600/90 to-indigo-700/90",
-  },
-  {
-    title: "Personal and home care",
-    slug: "personal-care-home-care",
-    image: "/images/cosmetic-care.jpg",
-    gradient: "from-pink-600/90 to-rose-700/90",
-  },
-  {
-    title: "Food and Food ingredient",
-    slug: "food-food-ingredient",
-    image: "/images/food-ingredients.jpg",
-    gradient: "from-amber-600/90 to-orange-700/90",
-  },
-  {
-    title: "Chemical",
-    slug: "chemical",
-    image: "/images/chemical-supply.jpg",
-    gradient: "from-teal-600/90 to-emerald-700/90",
-  },
-  {
-    title: "Agro-product",
-    slug: "agro-product",
-    image: "/images/agro-product.jpg",
-    gradient: "from-green-600/90 to-lime-700/90",
-  },
-  {
-    title: "Packaging",
-    slug: "packaging",
-    image: "/images/packaging.jpg",
-    gradient: "from-purple-600/90 to-violet-700/90",
-  },
-];
-
 export function ProductCategories() {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+
+  const categories = [
+    {
+      title: t("products.categories.pharma"),
+      slug: "pharmaceutical-health-care",
+      image: "/images/pharma-materials.jpg",
+      gradient: "from-blue-600/90 to-indigo-700/90",
+    },
+    {
+      title: t("products.categories.personalCare"),
+      slug: "personal-care-home-care",
+      image: "/images/cosmetic-care.jpg",
+      gradient: "from-pink-600/90 to-rose-700/90",
+    },
+    {
+      title: t("products.categories.food"),
+      slug: "food-food-ingredient",
+      image: "/images/food-ingredients.jpg",
+      gradient: "from-amber-600/90 to-orange-700/90",
+    },
+    {
+      title: t("products.categories.chemical"),
+      slug: "chemical",
+      image: "/images/chemical-supply.jpg",
+      gradient: "from-teal-600/90 to-emerald-700/90",
+    },
+    {
+      title: t("products.categories.agro"),
+      slug: "agro-product",
+      image: "/images/agro-product.jpg",
+      gradient: "from-green-600/90 to-lime-700/90",
+    },
+    {
+      title: t("products.categories.packaging"),
+      slug: "packaging",
+      image: "/images/packaging.jpg",
+      gradient: "from-purple-600/90 to-violet-700/90",
+    },
+  ];
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -103,14 +105,13 @@ export function ProductCategories() {
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-wider">
-                Product groups
+                {t("products.productGroups")}
               </p>
               <h2 className="mt-2 sm:mt-3 text-2xl sm:text-3xl font-bold tracking-tight text-foreground lg:text-4xl xl:text-5xl">
-                One Trusted Source
+                {t("products.oneTrustedSource")}
               </h2>
               <p className="mt-3 sm:mt-4 text-sm sm:text-base text-muted-foreground max-w-2xl">
-                Comprehensive raw material solutions across diverse industries,
-                backed by quality assurance and reliable supply chains.
+                {t("products.trustedDesc")}
               </p>
             </div>
             {/* Desktop-only link */}
@@ -118,13 +119,13 @@ export function ProductCategories() {
               href="/products"
               className="hidden md:flex items-center gap-2 shrink-0 text-sm font-semibold text-primary transition-all hover:opacity-70 hover:gap-3 group"
             >
-              View all products
+              {t("products.viewAll")}
               <ArrowUpRight className="h-4 w-4 transition-transform group-hover:rotate-45" />
             </Link>
           </div>
         </div>
 
-        {/* Grid — 1 col mobile, 2 col tablet, 3 col desktop */}
+        {/* Grid */}
         <StaggerContainer
           className="mt-8 sm:mt-12 lg:mt-16 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6"
           staggerDelay={0.08}
@@ -140,10 +141,7 @@ export function ProductCategories() {
                 href={`/products?category=${cat.slug}`}
                 className="group block overflow-hidden rounded-2xl sm:rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500"
               >
-                {/* aspect-[4/3] on mobile keeps cards compact; can loosen on larger screens */}
                 <div className="relative aspect-[4/3] overflow-hidden rounded-2xl sm:rounded-3xl">
-
-                  {/* Parallax image */}
                   <div className="parallax-image-container absolute inset-0 transition-transform duration-100 ease-out">
                     <Image
                       src={cat.image || "/placeholder.svg"}
@@ -154,7 +152,6 @@ export function ProductCategories() {
                     />
                   </div>
 
-                  {/* Overlays */}
                   <div className="absolute inset-0">
                     <div
                       className={`absolute inset-0 bg-gradient-to-t ${cat.gradient} via-black/40 to-transparent opacity-70 group-hover:opacity-80 transition-opacity duration-500`}
@@ -162,7 +159,6 @@ export function ProductCategories() {
                     <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
                     <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors duration-500" />
 
-                    {/* Text — smaller padding on mobile */}
                     <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6 lg:p-8">
                       <div className="relative">
                         <div className="absolute -inset-3 sm:-inset-4 bg-gradient-to-t from-black/60 via-black/40 to-transparent backdrop-blur-sm rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -172,12 +168,10 @@ export function ProductCategories() {
                       </div>
                     </div>
 
-                    {/* Arrow badge — smaller on mobile */}
                     <div className="absolute right-3 top-3 sm:right-5 sm:top-5 flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-white/20 backdrop-blur-md transition-all duration-500 transform translate-x-2 -translate-y-2 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:bg-white/30 group-hover:scale-110">
                       <ArrowUpRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" />
                     </div>
 
-                    {/* Shine sweep */}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-[1200ms] ease-out" />
                   </div>
                 </div>
@@ -185,17 +179,6 @@ export function ProductCategories() {
             </motion.div>
           ))}
         </StaggerContainer>
-
-        {/* Mobile "view all" link (shown below grid, hidden on md+) */}
-        {/* <div className="mt-6 text-center md:hidden">
-          <Link
-            href="/products"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-primary"
-          >
-            View all products
-            <ArrowUpRight className="h-4 w-4" />
-          </Link>
-        </div> */}
 
         {/* CTA */}
         <div
@@ -207,11 +190,11 @@ export function ProductCategories() {
             href="/products"
             className="inline-flex items-center gap-2 sm:gap-3 px-7 sm:px-10 py-3 sm:py-4 rounded-full bg-primary text-primary-foreground text-sm sm:text-base font-semibold transition-all duration-300 hover:shadow-2xl hover:scale-105 active:scale-95 shadow-lg"
           >
-            Explore all categories
+            {t("products.exploreAll")}
             <ArrowUpRight className="h-4 w-4 sm:h-5 sm:w-5" />
           </Link>
           <p className="mt-4 sm:mt-6 text-xs sm:text-sm text-muted-foreground font-medium">
-            Over 500+ products across 6 categories
+            {t("products.productCount")}
           </p>
         </div>
 

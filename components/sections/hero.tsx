@@ -10,73 +10,88 @@ import {
   AnimatePresence,
 } from "framer-motion";
 import { ArrowRight, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
-const heroImages = [
+const heroImagesData = [
   {
     src: "/images/hero1.png",
     alt: "Pharmaceutical materials and compounds",
-    title: "Quality Products",
-    subtitle: "Premium pharmaceutical and chemical supplies",
-    position: "object-center", 
+    titleKey: "home.hero.slide1Title",
+    subtitleKey: "home.hero.slide1Subtitle",
+    mobileOffset: "30%", // Custom offset per image
   },
   {
     src: "/images/hero2.png",
     alt: "Modern pharmaceutical laboratory",
-    title: "Advanced Research",
-    subtitle: "Cutting-edge pharmaceutical solutions",
-    position: "object-[center_20%]", 
+    titleKey: "home.hero.slide2Title",
+    subtitleKey: "home.hero.slide2Subtitle",
+    mobileOffset: "25%",
   },
   {
     src: "/images/hero3.png",
     alt: "Chemical supply chain solutions",
-    title: "Reliable Supply Chain",
-    subtitle: "Comprehensive logistics and warehousing services",
-    position: "object-[center_15%]", 
+    titleKey: "home.hero.slide3Title",
+    subtitleKey: "home.hero.slide3Subtitle",
+    mobileOffset: "20%",
   },
   {
     src: "/images/hero4.png",
     alt: "Distribution and logistics center",
-    title: "Global Distribution",
-    subtitle: "Efficient delivery across Southeast Asia",
-    position: "object-[center_25%]", 
+    titleKey: "home.hero.slide4Title",
+    subtitleKey: "home.hero.slide4Subtitle",
+    mobileOffset: "35%",
   },
 ];
 
 export function Hero() {
+  const { t } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [autoplay, setAutoplay] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"],
   });
 
-  const overlayOpacity = useTransform(scrollYProgress, [0, 0.5], [0.3, 0.5]);
+  const overlayOpacity = useTransform(scrollYProgress, [0, 0.2], [0.1, 0.25]);
+
+  // Detect mobile screen
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     if (!autoplay) return;
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % heroImages.length);
+      setCurrentIndex((prev) => (prev + 1) % heroImagesData.length);
     }, 5000);
     return () => clearInterval(interval);
   }, [autoplay]);
 
   const handlePrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + heroImages.length) % heroImages.length);
+    setCurrentIndex((prev) => (prev - 1 + heroImagesData.length) % heroImagesData.length);
     setAutoplay(false);
   };
 
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % heroImages.length);
+    setCurrentIndex((prev) => (prev + 1) % heroImagesData.length);
     setAutoplay(false);
   };
 
+  const currentSlide = heroImagesData[currentIndex];
+
   return (
-<section
-  ref={containerRef}
-  className="relative w-full h-svh overflow-hidden lg:h-screen lg:min-h-[700px]"
->
+    <section
+      ref={containerRef}
+      className="relative w-full h-svh overflow-hidden lg:h-screen lg:min-h-[700px]"
+    >
       {/* Image Carousel */}
       <AnimatePresence initial={false}>
         <motion.div
@@ -87,19 +102,34 @@ export function Hero() {
           transition={{ duration: 0.8, ease: "easeInOut" }}
           className="absolute inset-0"
         >
- <Image
-  src={heroImages[currentIndex].src}
-  alt={heroImages[currentIndex].alt}
-  fill
-  priority={currentIndex === 0}
-  sizes="100vw"
-  quality={90}
-  // This is the fix:
-  className="object-cover object-[center_top]" 
-/>
+          {/* For mobile: use a wrapper div with different positioning */}
+          {isMobile ? (
+            <div className="relative w-full h-full">
+              <div 
+                className="absolute inset-0 bg-cover bg-no-repeat"
+                style={{
+                  backgroundImage: `url(${currentSlide.src})`,
+                  backgroundPosition: `center ${currentSlide.mobileOffset || '30%'}`,
+                  backgroundSize: 'cover',
+                  transform: 'scale(1.15)', // Zoom in slightly on mobile
+                }}
+              />
+            </div>
+          ) : (
+            <Image
+              src={currentSlide.src}
+              alt={currentSlide.alt}
+              fill
+              priority={currentIndex === 0}
+              sizes="100vw"
+              quality={90}
+              className="object-cover object-[center_top]"
+            />
+          )}
         </motion.div>
       </AnimatePresence>
 
+      {/* Rest of your component remains the same */}
       {/* Blue overlay */}
       <motion.div
         style={{ opacity: overlayOpacity }}
@@ -107,7 +137,7 @@ export function Hero() {
       />
 
       {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-black/75 sm:from-black/20 sm:via-black/45 sm:to-black/65" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-black/5 to-black/5 sm:from-black/5 sm:via-black/5 sm:to-black/5" />
 
       {/* Decorative centre line */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,transparent_49.5%,rgba(255,255,255,0.04)_49.5%,rgba(255,255,255,0.04)_50.5%,transparent_50.5%)]" />
@@ -123,28 +153,17 @@ export function Hero() {
           >
             <span className="h-1.5 w-1.5 rounded-full bg-primary" />
             <span className="text-xs font-medium text-primary-foreground/90">
-              Your Trust Supply Chain Partner 
+              {t("home.hero.badge")}
             </span>
           </motion.div>
-
-          {/* <motion.h1
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.4 }}
-            className="max-w-3xl font-bold leading-[1.08] tracking-tight text-white text-3xl sm:text-5xl lg:text-7xl"
-          >
-            Together <span className="text-primary">for</span>
-            <br />
-            better.
-          </motion.h1> */}
 
           <motion.p
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.6 }}
-            className="mt-4 max-w-lg text-sm text-white/90 sm:mt-6 sm:text-base lg:text-lg"
+            className="mt-4 max-w-lg text-sm font-semibold text-white sm:mt-6 sm:text-base lg:text-lg"
           >
-            We deliver reliable supply chain solutions for industrial and specialty ingredients.
+            {t("home.hero.tagline")}
           </motion.p>
 
           <motion.div
@@ -157,7 +176,7 @@ export function Hero() {
               href="/products"
               className="group flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/30 transition hover:shadow-xl sm:px-6 sm:py-3.5"
             >
-              Explore Products
+              {t("home.hero.exploreProducts")}
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
 
@@ -165,7 +184,7 @@ export function Hero() {
               href="/about"
               className="rounded-lg border border-primary-foreground/20 bg-primary-foreground/5 px-5 py-3 text-sm font-semibold text-primary-foreground backdrop-blur-sm transition hover:bg-primary-foreground/10 sm:px-6 sm:py-3.5"
             >
-              About Us
+              {t("home.hero.aboutUs")}
             </Link>
           </motion.div>
         </div>
@@ -174,7 +193,7 @@ export function Hero() {
       {/* Carousel Controls */}
       <div className="absolute bottom-4 right-4 z-20 flex items-center gap-3 sm:bottom-8 sm:right-8 sm:gap-4">
         <div className="flex gap-1.5 sm:gap-2">
-          {heroImages.map((_, index) => (
+          {heroImagesData.map((_, index) => (
             <button
               key={index}
               onClick={() => { setCurrentIndex(index); setAutoplay(false); }}

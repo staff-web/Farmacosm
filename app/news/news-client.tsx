@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { Calendar, User, ArrowRight } from "lucide-react";
 import { blogPosts } from "./blog-data";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 
 const containerVariants = {
@@ -24,6 +25,7 @@ const itemVariants = {
 };
 
 export function NewsPageClient() {
+  const { t } = useLanguage();
   const featuredPosts = blogPosts.filter((post) => post.featured);
   const regularPosts = blogPosts.filter((post) => !post.featured);
   const categories = Array.from(
@@ -42,14 +44,13 @@ export function NewsPageClient() {
           className="border-b-2 sm:border-b-4 border-primary pb-3 sm:pb-4 lg:pb-6 mb-8 sm:mb-12 lg:mb-16"
         >
           <div className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-            Latest Updates
+            {t("news.latestUpdates")}
           </div>
           <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-black text-foreground tracking-tight mt-2">
-            Farmacosm News
+            {t("news.sectionTitle")}
           </h1>
           <p className="text-sm sm:text-base lg:text-lg text-muted-foreground mt-2 sm:mt-3 max-w-2xl">
-            Industry insights, market trends, and company updates from the
-            pharmaceutical and chemical supply chain leaders.
+            {t("news.sectionDesc")}
           </p>
         </motion.div>
 
@@ -143,7 +144,7 @@ export function NewsPageClient() {
             viewport={{ once: true }}
             className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-6 sm:mb-8 pb-3 sm:pb-4 border-b-2 border-primary"
           >
-            More News
+            {t("news.moreNews")}
           </motion.h2>
 
           <motion.div
@@ -216,7 +217,7 @@ export function NewsPageClient() {
           className="bg-card rounded-lg sm:rounded-xl border border-border p-4 sm:p-6 lg:p-8"
         >
           <h3 className="text-lg sm:text-xl font-bold text-foreground mb-3 sm:mb-4">
-            Browse by Category
+            {t("news.browseCategory")}
           </h3>
           <div className="flex flex-wrap gap-2 sm:gap-3">
             {categories.map((category) => (

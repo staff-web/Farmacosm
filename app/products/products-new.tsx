@@ -3,8 +3,9 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
+import { X, ArrowRight } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { categories, Product, productData, SLUG_TO_CATEGORY } from "./products-data";
 
 // ─── Animation variants ───────────────────────────────────────────────────────
@@ -28,6 +29,7 @@ function ProductCard({
   product: Product;
   onSelect: (p: Product) => void;
 }) {
+  const { t } = useLanguage();
   return (
     <motion.div
       variants={itemVariants}
@@ -61,7 +63,7 @@ function ProductCard({
         {/* View Details link - now always at bottom */}
         <div className="mt-3 sm:mt-4">
           <span className="text-xs sm:text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors">
-            View Details →
+            {t("products.viewDetails")}
           </span>
         </div>
       </div>
@@ -69,7 +71,7 @@ function ProductCard({
   );
 }
 
-// ─── Modal — matches screenshot exactly ──────────────────────────────────────
+// ─── Modal — Simplified version (only image, title, and contact button) ──────
 
 function ProductModal({
   product,
@@ -78,11 +80,18 @@ function ProductModal({
   product: Product;
   onClose: () => void;
 }) {
+  const { t } = useLanguage();
+
   // Prevent body scroll while modal is open
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => { document.body.style.overflow = ""; };
   }, []);
+
+  const handleContactClick = () => {
+    // You can replace this with your actual contact logic
+    window.location.href = '/contact';
+  };
 
   return (
     <div
@@ -94,7 +103,7 @@ function ProductModal({
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.96, y: 12 }}
         transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-        className="relative w-full max-w-xl sm:max-w-2xl max-h-[90vh] overflow-y-auto bg-white rounded-lg sm:rounded-2xl shadow-2xl"
+        className="relative w-full max-w-xl sm:max-w-2xl bg-white rounded-lg sm:rounded-2xl shadow-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close button - X in top-right corner */}
@@ -107,34 +116,59 @@ function ProductModal({
         </button>
 
         {/* Hero image */}
-        <div className="relative h-40 sm:h-48 lg:h-60 w-full bg-gray-100 flex-shrink-0">
+        <div className="relative h-40 sm:h-48 lg:h-60 w-full bg-gray-100">
           <Image
             src={product.image || "/placeholder.svg"}
             alt={product.name}
             fill
-            className="object-cover rounded-t-lg sm:rounded-t-2xl"
+            className="object-cover"
             sizes="(max-width: 672px) 100vw, 672px"
           />
         </div>
 
-        {/* Body */}
-        <div className="p-4 sm:p-6 lg:p-8">
+        {/* Simplified Body - Only Title and Contact Button */}
+        <div className="p-6 sm:p-8 lg:p-10">
           {/* Category pill */}
           <span className="inline-block bg-blue-50 text-blue-600 text-xs font-medium px-2.5 sm:px-3 py-1 rounded-full border border-blue-100">
             {product.category}
           </span>
 
           {/* Title */}
-          <h2 className="mt-2 sm:mt-3 text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900 leading-tight">
+          <h2 className="mt-3 sm:mt-4 text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 leading-tight">
             {product.name}
           </h2>
 
           {/* Price */}
+          <p className="mt-2 text-sm sm:text-base font-semibold text-blue-600">{product.price}</p>
+
+          {/* Divider */}
+          <hr className="my-6 sm:my-8 border-gray-100" />
+
+          {/* Contact Button */}
+          <button
+            onClick={handleContactClick}
+            className="w-full py-3 sm:py-4 bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base font-semibold rounded-lg sm:rounded-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 group"
+          >
+            <span>{t("products.contactForInfo")}</span>
+            <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 transition-transform duration-300 group-hover:translate-x-1" />
+          </button>
+        </div>
+
+        {/* ===== DETAILED PRODUCT INFORMATION - TEMPORARILY COMMENTED OUT ===== */}
+        {/* 
+        <div className="p-4 sm:p-6 lg:p-8">
+          <span className="inline-block bg-blue-50 text-blue-600 text-xs font-medium px-2.5 sm:px-3 py-1 rounded-full border border-blue-100">
+            {product.category}
+          </span>
+
+          <h2 className="mt-2 sm:mt-3 text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900 leading-tight">
+            {product.name}
+          </h2>
+
           <p className="mt-1.5 sm:mt-2 text-sm sm:text-base font-semibold text-blue-600">{product.price}</p>
 
           <hr className="my-3 sm:my-4 lg:my-5 border-gray-100" />
 
-          {/* Specs */}
           <div className="mb-4 sm:mb-5">
             <h3 className="text-xs sm:text-sm font-bold text-gray-900 uppercase tracking-wide mb-2">
               Specifications
@@ -142,7 +176,6 @@ function ProductModal({
             <p className="text-xs sm:text-sm text-gray-600">{product.specs}</p>
           </div>
 
-          {/* Description */}
           <div className="mb-4 sm:mb-5">
             <h3 className="text-xs sm:text-sm font-bold text-gray-900 uppercase tracking-wide mb-2">
               Description
@@ -150,7 +183,6 @@ function ProductModal({
             <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">{product.description}</p>
           </div>
 
-          {/* Features — 2-column grid */}
           {product.features && product.features.length > 0 && (
             <div className="mb-4 sm:mb-5">
               <h3 className="text-xs sm:text-sm font-bold text-gray-900 uppercase tracking-wide mb-2 sm:mb-3">
@@ -167,7 +199,6 @@ function ProductModal({
             </div>
           )}
 
-          {/* Applications */}
           {product.applications && product.applications.length > 0 && (
             <div className="mb-4 sm:mb-5">
               <h3 className="text-xs sm:text-sm font-bold text-gray-900 uppercase tracking-wide mb-2 sm:mb-3">
@@ -184,7 +215,6 @@ function ProductModal({
             </div>
           )}
 
-          {/* Technical data */}
           {product.technicalData && (
             <div className="mb-4 sm:mb-6">
               <h3 className="text-xs sm:text-sm font-bold text-gray-900 uppercase tracking-wide mb-2">
@@ -198,7 +228,6 @@ function ProductModal({
 
           <hr className="mb-4 sm:mb-5 border-gray-100" />
 
-          {/* Action buttons — matches screenshot */}
           <div className="flex gap-2 sm:gap-3">
             <button
               className="flex-1 py-2 sm:py-3 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold rounded-lg sm:rounded-xl transition-colors"
@@ -214,6 +243,7 @@ function ProductModal({
             </button>
           </div>
         </div>
+        */}
       </motion.div>
     </div>
   );
@@ -222,6 +252,7 @@ function ProductModal({
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 export function ProductsNewContent() {
+  const { t } = useLanguage();
   const searchParams = useSearchParams();
   const router = useRouter();
   const categoryParam = searchParams.get("category");
@@ -290,7 +321,7 @@ export function ProductsNewContent() {
                 {/* "PRODUCTS" header — solid blue, matches screenshot */}
                 <div className="bg-blue-600 px-3 sm:px-4 lg:px-5 py-2.5 sm:py-3 lg:py-3.5 rounded-t-lg">
                   <h2 className="text-xs sm:text-sm font-bold text-white uppercase tracking-widest">
-                    Products
+                    {t("navigation.products")}
                   </h2>
                 </div>
 
@@ -336,7 +367,10 @@ export function ProductsNewContent() {
                   {selectedCategory}
                 </h1>
                 <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-gray-500">
-                  {currentProducts.length} product{currentProducts.length !== 1 ? "s" : ""} available
+                  {currentProducts.length}{" "}
+                  {currentProducts.length !== 1
+                    ? t("products.availablePlural")
+                    : t("products.available")}
                 </p>
               </motion.div>
 

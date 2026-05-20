@@ -12,6 +12,8 @@ export const metadata: Metadata = {
 };
 
 export default function ProductsPage() {
+  // Note: Translation hook cannot be used in Server Components
+  // This is a layout component, the actual translation happens in ProductsNewContent
   return (
     <>
       <Navigation />
@@ -19,8 +21,9 @@ export default function ProductsPage() {
         <PageHero
           imageSrc="/images/pharma-materials.jpg"
           subtitle="Product Catalog"
-          title="Our Products"
-          description="Browse our comprehensive product catalog with detailed specifications and easy filtering by category."
+          title="products.title"
+          description="products.description"
+          useTranslation={true}
         />
         <Suspense fallback={null}>
           <ProductsNewContent />

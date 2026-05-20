@@ -6,99 +6,98 @@ import { useSearchParams } from "next/navigation";
 import { CTA } from "@/components/sections/cta";
 import { Cog, Microscope, Warehouse } from "lucide-react";
 import Link from "next/link";
-
-// ─── Data ─────────────────────────────────────────────────────────────────────
-const services = [
-  {
-    id: "oem-odm",
-    title: "OEM / ODM Services",
-    icon: Cog,
-    description: "Original Equipment & Design Manufacturing",
-    details:
-      "We combine OEM scale with ODM creativity — so whether you bring us your specs or need us to design the product from scratch, we own every step from formulation to finished goods.",
-    features: [
-      "Large-scale contract manufacturing",
-      "Custom formulation & product design",
-      "Prototype & pilot batch development",
-      "Flexible MOQ & batch sizes",
-      "Quality control & in-process testing",
-      "Intellectual property support",
-      "Packaging design & artwork",
-      "On-time delivery commitment",
-    ],
-  },
-  {
-    id: "rd",
-    title: "R&D and Product Analysis",
-    icon: Microscope,
-    description: "Research & Development",
-    details:
-      "Advance your pipeline with our research and development partnerships. We invest in cutting-edge science to create breakthrough pharmaceutical and nutraceutical solutions.",
-    features: [
-      "Advanced research facilities",
-      "Scientific & formulation expertise",
-      "Innovation & co-development partnerships",
-      "Technology transfer support",
-      "Stability & compatibility testing",
-      "Validation & documentation",
-      "Publication & patent assistance",
-      "Regulatory dossier preparation",
-    ],
-  },
-  {
-    id: "warehouse",
-    title: "Distribution & Warehousing",
-    icon: Warehouse,
-    description: "Regional Storage & Distribution",
-    details:
-      "Our distribution warehouse extends our logistics capabilities — offering dedicated storage, pick-and-pack, and last-mile distribution across Southeast Asia, purpose-built for pharmaceutical and specialty chemical supply chains.",
-    features: [
-      "GDP-compliant ambient & cold-chain storage",
-      "Temperature & humidity monitoring 24/7",
-      "Inventory management system (IMS)",
-      "Pick, pack & replenishment services",
-      "Customs clearance & import documentation",
-      "Regional distribution to SEA markets",
-      "Hazardous materials handling",
-      "Returns & reverse logistics",
-    ],
-  },
-];
-
-const supportCards = [
-  {
-    id: "logistics",
-    title: "Warehouse & Logistics",
-    description:
-      "Our state-of-the-art warehousing facilities handle storage, inventory management, and distribution of pharmaceutical and chemical materials across Southeast Asia.",
-    bullets: [
-      "Temperature-controlled storage",
-      "Inventory management systems",
-      "Custom clearance processing",
-      "Distribution coordination",
-    ],
-  },
-  {
-    id: "standards",
-    title: "Standards & Regulations",
-    description:
-      "Navigate regulatory compliance with confidence. Our expert team ensures your products meet all local and international standards.",
-    bullets: [
-      "Regulatory compliance consulting",
-      "Product registration assistance",
-      "Quality certification support",
-      "Documentation management",
-    ],
-  },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 // Support card IDs that should scroll to the support section instead of switching tabs
-const SUPPORT_IDS = supportCards.map((c) => c.id);
+const SUPPORT_IDS = ["logistics", "standards"];
 
 // ─── Inner component (uses useSearchParams) ───────────────────────────────────
 function ServicesInner() {
+  const { t } = useLanguage();
   const searchParams = useSearchParams();
   const [selectedService, setSelectedService] = useState<string>("oem-odm");
+
+  // ─── Data (inside component so t() is reactive) ───────────────────────────
+  const services = [
+    {
+      id: "oem-odm",
+      title: t("services.oem.title"),
+      icon: Cog,
+      description: t("services.oem.description"),
+      details: t("services.oem.details"),
+      features: [
+        "Large-scale contract manufacturing",
+        "Custom formulation & product design",
+        "Prototype & pilot batch development",
+        "Flexible MOQ & batch sizes",
+        "Quality control & in-process testing",
+        "Intellectual property support",
+        "Packaging design & artwork",
+        "On-time delivery commitment",
+      ],
+    },
+    {
+      id: "rd",
+      title: t("services.rd.title"),
+      icon: Microscope,
+      description: t("services.rd.description"),
+      details: t("services.rd.details"),
+      features: [
+        "Advanced research facilities",
+        "Scientific & formulation expertise",
+        "Innovation & co-development partnerships",
+        "Technology transfer support",
+        "Stability & compatibility testing",
+        "Validation & documentation",
+        "Publication & patent assistance",
+        "Regulatory dossier preparation",
+      ],
+    },
+    {
+      id: "warehouse",
+      title: t("services.warehouse.title"),
+      icon: Warehouse,
+      description: t("services.warehouse.description"),
+      details: t("services.warehouse.details"),
+      features: [
+        "GDP-compliant ambient & cold-chain storage",
+        "Temperature & humidity monitoring 24/7",
+        "Inventory management system (IMS)",
+        "Pick, pack & replenishment services",
+        "Customs clearance & import documentation",
+        "Regional distribution to SEA markets",
+        "Hazardous materials handling",
+        "Returns & reverse logistics",
+      ],
+    },
+  ];
+
+  const supportCards = [
+    {
+      id: "logistics",
+      title: "Warehouse & Logistics",
+      description:
+        "Our state-of-the-art warehousing facilities handle storage, inventory management, and distribution of pharmaceutical and chemical materials across Southeast Asia.",
+      bullets: [
+        "Temperature-controlled storage",
+        "Inventory management systems",
+        "Custom clearance processing",
+        "Distribution coordination",
+      ],
+    },
+    {
+      id: "standards",
+      title: "Standards & Regulations",
+      description:
+        "Navigate regulatory compliance with confidence. Our expert team ensures your products meet all local and international standards.",
+      bullets: [
+        "Regulatory compliance consulting",
+        "Product registration assistance",
+        "Quality certification support",
+        "Documentation management",
+      ],
+    },
+  ];
 
   // Whenever the ?service= param changes (nav click), update the active tab
   useEffect(() => {
@@ -154,16 +153,15 @@ function ServicesInner() {
             <div className="inline-flex items-center gap-2 mb-2 sm:mb-3">
               <div className="h-0.5 w-4 sm:w-6 lg:w-8 bg-primary" />
               <span className="text-xs sm:text-sm font-semibold tracking-wider text-primary uppercase">
-                Our Services
+                {t("services.sectionLabel")}
               </span>
               <div className="h-0.5 w-4 sm:w-6 lg:w-8 bg-primary" />
             </div>
             <h2 className="mt-2 sm:mt-3 text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground">
-              Comprehensive Solutions
+              {t("services.comprehensiveSolutions")}
             </h2>
             <p className="mt-3 sm:mt-4 text-sm sm:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto">
-              We offer specialized services across manufacturing, design, research,
-              and regional distribution to meet your business needs.
+              {t("services.comprehensiveDesc")}
             </p>
           </motion.div>
 
@@ -301,14 +299,14 @@ function ServicesInner() {
 
                 <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-primary/10">
                   <Link href="/contact" prefetch={true}>
-  <motion.div
-    whileHover={{ x: 4 }}
-    className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm lg:text-base font-semibold text-primary-foreground transition-all hover:shadow-lg cursor-pointer"
-  >
-    Learn More & Contact
-    <span>→</span>
-  </motion.div>
-</Link>
+                    <motion.div
+                      whileHover={{ x: 4 }}
+                      className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm lg:text-base font-semibold text-primary-foreground transition-all hover:shadow-lg cursor-pointer"
+                    >
+                      {t("services.learnMore")}
+                      <span>→</span>
+                    </motion.div>
+                  </Link>
                 </div>
               </motion.div>
             )}
@@ -323,21 +321,21 @@ function ServicesInner() {
             className="grid grid-cols-1 gap-4 sm:gap-5 lg:gap-6 sm:grid-cols-2 lg:grid-cols-3 rounded-2xl sm:rounded-3xl bg-card border border-border p-5 sm:p-8 lg:p-12"
           >
             <div>
-              <h4 className="text-base sm:text-lg font-bold text-foreground mb-2">Quality Guaranteed</h4>
+              <h4 className="text-base sm:text-lg font-bold text-foreground mb-2">{t("services.qualityTitle")}</h4>
               <p className="text-xs sm:text-sm lg:text-base text-muted-foreground">
-                Every product meets international quality standards and regulatory requirements.
+                {t("services.qualityDesc")}
               </p>
             </div>
             <div>
-              <h4 className="text-base sm:text-lg font-bold text-foreground mb-2">Expert Team</h4>
+              <h4 className="text-base sm:text-lg font-bold text-foreground mb-2">{t("services.expertTitle")}</h4>
               <p className="text-xs sm:text-sm lg:text-base text-muted-foreground">
-                Our scientists and engineers bring decades of combined experience to your projects.
+                {t("services.expertDesc")}
               </p>
             </div>
             <div>
-              <h4 className="text-base sm:text-lg font-bold text-foreground mb-2">Partnership Focus</h4>
+              <h4 className="text-base sm:text-lg font-bold text-foreground mb-2">{t("services.partnerTitle")}</h4>
               <p className="text-xs sm:text-sm lg:text-base text-muted-foreground">
-                We work as your partner, invested in your success and long-term growth.
+                {t("services.partnerDesc")}
               </p>
             </div>
           </motion.div>
@@ -405,33 +403,3 @@ export function ServicesContent() {
     </Suspense>
   );
 }
-{/* uncommand these to see details 
-
-<p className={`mt-1 sm:mt-2 ...`}>
-
-  {service.description}
-
-</p> 
-
-<p className="text-sm sm:text-base ...">
-
-  {selected.details}
-
-</p>
-
- <div className="grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-2">
-                  {selected.features.map((feature, index) => (
-                    <motion.div
-                      key={feature}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.3, delay: index * 0.05 }}
-                      className="flex items-start gap-2 sm:gap-3 rounded-lg bg-white/50 p-3 sm:p-4 backdrop-blur-sm border border-primary/10 hover:border-primary/20 transition-colors"
-                    >
-                      <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-primary flex-shrink-0" />
-                      <span className="font-medium text-xs sm:text-sm lg:text-base text-foreground">{feature}</span>
-                    </motion.div>
-                  ))}
-                </div> 
-
-*/}

@@ -17,9 +17,10 @@ export default function ServicesPage() {
       <main>
         <PageHero
           imageSrc="/images/chemical-supply.jpg"
-          subtitle="Our services"
-          title="How we work with you."
-          description="End-to-end supply chain solutions from product development to regulatory compliance, designed to help your business succeed in the region."
+          subtitle="pageHero.services.subtitle"
+          title="pageHero.services.title"
+          description="pageHero.services.description"
+          useTranslation={true}
         />
         <ServicesContent />
       </main>

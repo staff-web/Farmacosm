@@ -6,29 +6,24 @@ import {
   StaggerContainer,
   staggerChildVariants,
 } from "@/components/scroll-animations";
+import { useLanguage } from "@/contexts/LanguageContext";
 
-const services = [
+const servicesData = [
   {
     icon: Package,
-    title: "Supply Chain",
-    description:
-      "Comprehensive supply of raw materials, equipment, and packaging solutions for the pharmaceutical, chemical, food, cosmetic, home care, and personal care industries.",
+    titleKey: "services.supplyChain.title",
+    descriptionKey: "services.supplyChain.description",
   },
   {
     icon: FlaskConical,
-    title: "Product Development",
-    description:
-      "OEM/ODM and R&D service to bring your product concept to market with expert formulation.",
+    titleKey: "services.productDev.title",
+    descriptionKey: "services.productDev.description",
   },
-  // {
-  //   icon: TrendingUp,
-  //   title: "Sales Extension",
-  //   description:
-  //     "Strategic market expansion support to grow your reach and strengthen distribution channels.",
-  // },
 ];
 
 export function WhatWeDo() {
+  const { t } = useLanguage();
+
   return (
     <section className="bg-card py-16 sm:py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -46,17 +41,16 @@ export function WhatWeDo() {
               <div className="inline-flex items-center gap-2 mb-4 sm:mb-6">
                 <div className="h-0.5 w-8 bg-primary" />
                 <span className="text-xs sm:text-sm font-semibold tracking-wider text-primary uppercase">
-                  We Offer
+                  {t("home.whatWeDo.label") || "We Offer"}
                 </span>
               </div>
 
               <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground lg:text-4xl xl:text-5xl">
-                End-to-end supply chain solutions
+                {t("home.whatWeDo.title") || "End-to-end supply chain solutions"}
               </h2>
 
               <p className="mt-3 sm:mt-6 text-sm sm:text-base lg:text-lg text-muted-foreground leading-relaxed">
-                From sourcing raw materials to regulatory guidance, we cover
-                every link in your supply chain.
+                {t("home.whatWeDo.description") || "From sourcing raw materials to regulatory guidance, we cover every link in your supply chain."}
               </p>
               
               <div className="pt-6 flex justify-start">
@@ -74,11 +68,11 @@ export function WhatWeDo() {
               className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6 h-full" 
               staggerDelay={0.1}
             >
-              {services.map((service, idx) => {
+              {servicesData.map((service, idx) => {
                 const Icon = service.icon;
                 return (
                   <motion.div
-                    key={service.title}
+                    key={idx}
                     variants={staggerChildVariants}
                     className="group h-full flex"
                   >
@@ -92,18 +86,14 @@ export function WhatWeDo() {
                           <div className="h-8 w-px bg-border group-hover:bg-primary transition-colors duration-300" />
                           <Icon className="h-6 w-6 lg:h-8 lg:w-8 text-muted-foreground group-hover:text-primary transition-colors duration-300 shrink-0" />
                         </div>
-                        {/* 
-                          Arrow commented out as requested since items are not clickable 
-                          <ChevronRight className="h-5 w-5 text-muted-foreground/30 group-hover:text-primary group-hover:translate-x-1 transition-all" /> 
-                        */}
                       </div>
 
                       <div className="flex-1">
                         <h3 className="text-base sm:text-lg lg:text-2xl font-semibold text-foreground mb-4 group-hover:text-primary transition-colors duration-300">
-                          {service.title}
+                          {t(service.titleKey)}
                         </h3>
                         <p className="text-sm sm:text-base lg:text-lg text-muted-foreground leading-relaxed">
-                          {service.description}
+                          {t(service.descriptionKey)}
                         </p>
                       </div>
 

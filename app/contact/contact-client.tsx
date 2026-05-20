@@ -2,22 +2,8 @@
 
 import { motion } from "framer-motion";
 import { ContactForm } from "@/components/contact-form";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { MapPin, Phone, Clock } from "lucide-react";
-
-const contactInfo = [
-  {
-    icon: MapPin,
-    label: "Address",
-    value: "No.B6, Road 01, Russey Keo, Phnom Penh, Cambodia",
-    href: null,
-  },
-  {
-    icon: Clock,
-    label: "Hours",
-    value: "Monday – Friday, 8:00 AM – 5:00 PM",
-    href: null,
-  },
-];
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -40,6 +26,23 @@ const itemVariants = {
 };
 
 export function ContactPageClient() {
+  const { t } = useLanguage();
+  
+  const contactInfo = [
+    {
+      icon: MapPin,
+      label: t("contact.address"),
+      value: "No.B6, Road 01, Russey Keo, Phnom Penh, Cambodia",
+      href: null,
+    },
+    {
+      icon: Clock,
+      label: t("contact.hours"),
+      value: "Monday – Friday, 8:00 AM – 5:00 PM",
+      href: null,
+    },
+  ];
+  
   return (
     <section className="relative bg-background py-3 sm:py-3 lg:py-4">
 
@@ -114,10 +117,10 @@ export function ContactPageClient() {
                     </div>
                     <div>
                       <p className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-primary">
-                        Call Us
+                        {t("contact.callUs")}
                       </p>
                       <p className="text-sm sm:text-base font-medium text-gray-900">
-                        Click to call
+                        {t("contact.clickToCall")}
                       </p>
                     </div>
                   </div>
@@ -128,7 +131,7 @@ export function ContactPageClient() {
               </motion.div>
 
               {/* Map */}
-              <motion.div
+              {/* <motion.div
                 className="overflow-hidden rounded-xl sm:rounded-2xl border border-primary/10 shadow-lg bg-white h-72 sm:h-80 lg:h-96"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -146,7 +149,7 @@ export function ContactPageClient() {
                     referrerPolicy="no-referrer-when-downgrade"
                   />
                 </div>
-              </motion.div>
+              </motion.div> */}
             </div>
           </motion.div>
 

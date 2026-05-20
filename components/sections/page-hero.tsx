@@ -3,15 +3,18 @@
 import { useRef } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface PageHeroProps {
   imageSrc: string;
   title: string;
   subtitle: string;
   description?: string;
+  useTranslation?: boolean;
 }
 
-export function PageHero({ imageSrc, title, subtitle, description }: PageHeroProps) {
+export function PageHero({ imageSrc, title, subtitle, description, useTranslation = false }: PageHeroProps) {
+  const { t } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -21,6 +24,11 @@ export function PageHero({ imageSrc, title, subtitle, description }: PageHeroPro
   const imageY = useTransform(scrollYProgress, [0, 1], [0, 120]);
   const imageScale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
   const overlayOpacity = useTransform(scrollYProgress, [0, 0.5], [0.55, 0.75]);
+
+  // Use translation if enabled, otherwise use raw text
+  const displayTitle = useTranslation ? t(title) : title;
+  const displaySubtitle = useTranslation ? t(subtitle) : subtitle;
+  const displayDescription = description && useTranslation ? t(description) : description;
 
   return (
     <section
@@ -64,14 +72,14 @@ export function PageHero({ imageSrc, title, subtitle, description }: PageHeroPro
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             <p className="text-xs font-medium uppercase tracking-[0.2em] text-primary">
-              {subtitle}
+              {displaySubtitle}
             </p>
             <h1 className="mt-4 text-balance text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-5xl md:text-6xl">
-              {title}
+              {displayTitle}
             </h1>
-            {description && (
+            {displayDescription && (
               <p className="mt-4 max-w-2xl text-lg leading-relaxed text-white/90">
-                {description}
+                {displayDescription}
               </p>
             )}
           </motion.div>
