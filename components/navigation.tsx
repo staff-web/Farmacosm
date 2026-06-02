@@ -26,11 +26,10 @@ const getNavLinks = (t: (key: string) => string) => [
   {
     href: "/services",
     label: t("navigation.services"),
-    // You can apply the same pattern to services if you have translation keys for them!
     subLinks: [
-      { href: "/services?service=oem-odm", label: "OEM / ODM" },
-      { href: "/services?service=rd", label: "R&D and Product Analysis" },
-      { href: "/services?service=warehouse", label: "Distribution & Warehousing" },
+      { href: "/services?service=oem-odm", label: t("services.oem.title") },
+      { href: "/services?service=rd", label: t("services.rd.title") },
+      { href: "/services?service=warehouse", label: t("services.warehouse.title") },
     ],
   },
   { href: "/about", label: t("navigation.about") },
@@ -40,7 +39,7 @@ const getNavLinks = (t: (key: string) => string) => [
 
 export function Navigation() {
   const { t } = useLanguage();
-  const navLinks = getNavLinks(t); // Dynamically builds translated links on render
+  const navLinks = getNavLinks(t);
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -55,6 +54,13 @@ export function Navigation() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Close mobile menu and reset state on route change
+  useEffect(() => {
+    setIsOpen(false);
+    setMobileOpenSection(null);
+    setOpenDropdown(null);
+  }, [pathname]);
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
@@ -91,7 +97,7 @@ export function Navigation() {
             <motion.img
               src="/images/farmacosmlogo2.png"
               animate={{ scale: scrolled ? 0.9 : 1 }}
-              className="h-[5.5rem] w-auto object-contain  md:h-25 lg:h-28"
+              className="h-[5.5rem] w-auto object-contain md:h-25 lg:h-28"
               alt="Farmacosm Logo"
             />
           </Link>
@@ -218,7 +224,7 @@ export function Navigation() {
             >
               <div className="flex flex-col min-h-full">
                 <div className="flex items-center justify-between p-4 sm:p-6 border-b border-slate-100 bg-white">
-                  <Link href="/" className="flex items-center shrink-0">
+                  <Link href="/" className="flex items-center shrink-0" onClick={() => setIsOpen(false)}>
                     <motion.img
                       src="/images/farmacosmlogo2.png"
                       animate={{ scale: scrolled ? 0.9 : 1 }}

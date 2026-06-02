@@ -1,0 +1,16 @@
+[debug] [2026-05-26T03:39:41.598Z] ----------------------------------------------------------------------
+[debug] [2026-05-26T03:39:41.599Z] Command:       /opt/homebrew/Cellar/node/25.6.1/bin/node /opt/homebrew/bin/firebase deploy
+[debug] [2026-05-26T03:39:41.599Z] CLI Version:   15.18.0
+[debug] [2026-05-26T03:39:41.599Z] Platform:      darwin
+[debug] [2026-05-26T03:39:41.599Z] Node Version:  v25.6.1
+[debug] [2026-05-26T03:39:41.599Z] Time:          Tue May 26 2026 10:39:41 GMT+0700 (Indochina Time)
+[debug] [2026-05-26T03:39:41.599Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-05-26T03:39:41.926Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-05-26T03:39:41.926Z] > authorizing via signed-in user (sengkimsun369@gmail.com)
+[debug] [2026-05-26T03:39:41.926Z] [iam] checking project farmacosm1 for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2026-05-26T03:39:41.926Z] Checked if tokens are valid: true, expires at: 1779768522112
+[debug] [2026-05-26T03:39:41.927Z] Checked if tokens are valid: true, expires at: 1779768522112
+[debug] [2026-05-26T03:39:41.927Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/farmacosm1:testIamPermissions [none]
+[debug] [2026-05-26T03:39:41.927Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/farmacosm1:testIamPermissions  x-goog-user-project=farmacosm1
+[debug] [2026-05-26T03:39:41.927Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/farmacosm1:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}

@@ -3,9 +3,12 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import COUNTRIES, { flagEmoji } from "@/components/countries";
 
 export function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
+  const { t } = useLanguage();
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -110,20 +113,45 @@ export function ContactForm() {
           />
         </div>
 
-        <div>
-          <label
-            htmlFor="company"
-            className="mb-2 block text-sm font-semibold uppercase tracking-wide text-gray-700"
-          >
-            Company Name
-          </label>
-          <input
-            type="text"
-            id="company"
-            name="company"
-            className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3.5 text-base text-gray-900 transition-all placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
-            placeholder="Enter your company name"
-          />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <label
+              htmlFor="company"
+              className="mb-2 block text-sm font-semibold uppercase tracking-wide text-gray-700"
+            >
+              {t("contact.company")}
+            </label>
+            <input
+              type="text"
+              id="company"
+              name="company"
+              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3.5 text-base text-gray-900 transition-all placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
+              placeholder={t("contact.companyPlaceholder")}
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="country"
+              className="mb-2 block text-sm font-semibold uppercase tracking-wide text-gray-700"
+            >
+              {t("contact.country")}
+            </label>
+
+            <select
+              id="country"
+              name="country"
+              className="w-full rounded-lg border border-gray-300 bg-white px-3 py-3.5 text-base text-gray-900 transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
+              defaultValue=""
+            >
+              <option value="">{t("contact.countryPlaceholder")}</option>
+              {COUNTRIES.map((c) => (
+                <option key={c.code} value={c.code}>
+                  {flagEmoji(c.code)} {c.name}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         <div>

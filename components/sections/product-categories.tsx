@@ -26,7 +26,7 @@ export function ProductCategories() {
     {
       title: t("products.categories.personalCare"),
       slug: "personal-care-home-care",
-      image: "/images/cosmetic-care.jpg",
+      image: "/images/PersonalCare.png",
       gradient: "from-pink-600/90 to-rose-700/90",
     },
     {

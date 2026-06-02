@@ -18,28 +18,32 @@ const heroImagesData = [
     alt: "Pharmaceutical materials and compounds",
     titleKey: "home.hero.slide1Title",
     subtitleKey: "home.hero.slide1Subtitle",
-    mobileOffset: "30%", // Custom offset per image
+    mobileOffset: "0%",
+    blur: false,
   },
   {
     src: "/images/hero2.png",
     alt: "Modern pharmaceutical laboratory",
     titleKey: "home.hero.slide2Title",
     subtitleKey: "home.hero.slide2Subtitle",
-    mobileOffset: "25%",
+    mobileOffset: "0%",
+    blur: false,
   },
   {
     src: "/images/hero3.png",
     alt: "Chemical supply chain solutions",
     titleKey: "home.hero.slide3Title",
     subtitleKey: "home.hero.slide3Subtitle",
-    mobileOffset: "20%",
+    mobileOffset: "0%",
+    blur: true, // This image will have a blur effect on desktop only
   },
   {
     src: "/images/hero4.png",
     alt: "Distribution and logistics center",
     titleKey: "home.hero.slide4Title",
     subtitleKey: "home.hero.slide4Subtitle",
-    mobileOffset: "35%",
+    mobileOffset: "0%",
+    blur: false,
   },
 ];
 
@@ -87,6 +91,9 @@ export function Hero() {
 
   const currentSlide = heroImagesData[currentIndex];
 
+  // Determine if blur should be applied: only for third image (index 2) on desktop
+  const shouldApplyBlur = currentSlide.blur && !isMobile;
+
   return (
     <section
       ref={containerRef}
@@ -102,20 +109,7 @@ export function Hero() {
           transition={{ duration: 0.8, ease: "easeInOut" }}
           className="absolute inset-0"
         >
-          {/* For mobile: use a wrapper div with different positioning */}
-          {isMobile ? (
-            <div className="relative w-full h-full">
-              <div 
-                className="absolute inset-0 bg-cover bg-no-repeat"
-                style={{
-                  backgroundImage: `url(${currentSlide.src})`,
-                  backgroundPosition: `center ${currentSlide.mobileOffset || '30%'}`,
-                  backgroundSize: 'cover',
-                  transform: 'scale(1.15)', // Zoom in slightly on mobile
-                }}
-              />
-            </div>
-          ) : (
+          <div className="relative w-full h-full">
             <Image
               src={currentSlide.src}
               alt={currentSlide.alt}
@@ -125,11 +119,31 @@ export function Hero() {
               quality={90}
               className="object-cover object-[center_top]"
             />
-          )}
+
+            {/* Conditional blur overlay - only on desktop for third image */}
+            {shouldApplyBlur && (
+              <div
+                className="absolute inset-0"
+                style={{
+                  maskImage: "linear-gradient(to right, transparent 70%, black 85%, black 100%)",
+                  WebkitMaskImage: "linear-gradient(to right, transparent 70%, black 85%, black 100%)",
+                }}
+              >
+                <Image
+                  src={currentSlide.src}
+                  alt={currentSlide.alt}
+                  fill
+                  className="object-cover object-[center_top]"
+                  style={{
+                    filter: "blur(5px)",
+                  }}
+                />
+              </div>
+            )}
+          </div>
         </motion.div>
       </AnimatePresence>
 
-      {/* Rest of your component remains the same */}
       {/* Blue overlay */}
       <motion.div
         style={{ opacity: overlayOpacity }}

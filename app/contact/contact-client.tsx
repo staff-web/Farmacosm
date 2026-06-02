@@ -98,14 +98,6 @@ export function ContactPageClient() {
                 whileInView="visible"
                 viewport={{ once: true }}
               >
-                {/* <div className="mb-2">
-                  <p className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-primary">
-                    Quick Contact
-                  </p>
-                  <p className="text-xs sm:text-sm text-gray-600 mt-1">
-                    Click to call us directly
-                  </p>
-                </div> */}
                 <motion.a
                   href="tel:+85516329930"
                   variants={itemVariants}
@@ -129,27 +121,6 @@ export function ContactPageClient() {
                   </div>
                 </motion.a>
               </motion.div>
-
-              {/* Map */}
-              {/* <motion.div
-                className="overflow-hidden rounded-xl sm:rounded-2xl border border-primary/10 shadow-lg bg-white h-72 sm:h-80 lg:h-96"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                viewport={{ once: true }}
-              >
-                <div className="relative w-full h-full">
-                  <iframe
-                    title="Farmacosm Office Location"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31254.1!2d104.89!3d11.58!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3109513dc76a6be3%3A0x9c010ee85ab525bb!2sRussey%20Keo%2C%20Phnom%20Penh!5e0!3m2!1sen!2skh!4v1700000000000"
-                    className="absolute inset-0 w-full h-full grayscale transition-all duration-300 hover:grayscale-0"
-                    style={{ border: 0 }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                  />
-                </div>
-              </motion.div> */}
             </div>
           </motion.div>
 

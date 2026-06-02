@@ -1,9 +1,9 @@
 1:"$Sreact.fragment"
-2:I[13474,["/_next/static/chunks/a5c5b4122bc8b487.js","/_next/static/chunks/39a7523c876ef597.js","/_next/static/chunks/a33bd2bdb69070ad.js","/_next/static/chunks/0718bb6a7fefc35b.js"],"Navigation"]
-3:I[1370,["/_next/static/chunks/a5c5b4122bc8b487.js","/_next/static/chunks/39a7523c876ef597.js","/_next/static/chunks/a33bd2bdb69070ad.js","/_next/static/chunks/0718bb6a7fefc35b.js"],"PageHero"]
-4:I[44631,["/_next/static/chunks/a5c5b4122bc8b487.js","/_next/static/chunks/39a7523c876ef597.js","/_next/static/chunks/a33bd2bdb69070ad.js","/_next/static/chunks/0718bb6a7fefc35b.js"],"ContactPageClient"]
-5:I[76841,["/_next/static/chunks/a5c5b4122bc8b487.js","/_next/static/chunks/39a7523c876ef597.js","/_next/static/chunks/a33bd2bdb69070ad.js","/_next/static/chunks/0718bb6a7fefc35b.js"],"Footer"]
+2:I[47257,["/_next/static/chunks/ff1a16fafef87110.js","/_next/static/chunks/52652041917684c2.js"],"ClientPageRoot"]
+3:I[69139,["/_next/static/chunks/22a8535e1ba81a8a.js","/_next/static/chunks/75b5d15ab5895f57.js","/_next/static/chunks/cd75b0a56d78a079.js"],"default"]
 6:I[97367,["/_next/static/chunks/ff1a16fafef87110.js","/_next/static/chunks/52652041917684c2.js"],"OutletBoundary"]
 7:"$Sreact.suspense"
-0:{"buildId":"dyNmBrQXxdSkR_wIl5lLP","rsc":["$","$1","c",{"children":[[["$","$L2",null,{}],["$","main",null,{"className":"flex flex-col","children":[["$","$L3",null,{"imageSrc":"/images/food-ingredients.jpg","subtitle":"Contact","title":"Get in touch.","description":"Have a question or need a quote? Reach out and our team will respond within one business day."}],["$","section",null,{"className":"relative bg-background py-16 sm:py-24 lg:py-32","children":["$","div",null,{"className":"mx-auto max-w-7xl px-4 sm:px-6 lg:px-8","children":["$","$L4",null,{}]}]}]]}],["$","$L5",null,{}]],[["$","script","script-0",{"src":"/_next/static/chunks/39a7523c876ef597.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/a33bd2bdb69070ad.js","async":true}],["$","script","script-2",{"src":"/_next/static/chunks/0718bb6a7fefc35b.js","async":true}]],["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],"loading":null,"isPartial":false}
+0:{"buildId":"CJNlqe-ZjZBLG0dmVkQVY","rsc":["$","$1","c",{"children":[["$","$L2",null,{"Component":"$3","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@4","$@5"]}}],[["$","script","script-0",{"src":"/_next/static/chunks/75b5d15ab5895f57.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/cd75b0a56d78a079.js","async":true}]],["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],"loading":null,"isPartial":false}
+4:{}
+5:"$0:rsc:props:children:0:props:serverProvidedParams:params"
 8:null

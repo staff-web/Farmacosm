@@ -192,19 +192,19 @@ export default function AboutPage() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 items-center gap-8 sm:gap-12 lg:gap-16 lg:grid-cols-2">
               <SlideInLeft>
-                <ParallaxImage
-                  className="relative aspect-[4/3] min-h-[240px] sm:min-h-[320px] lg:aspect-auto lg:h-[500px] rounded-xl sm:rounded-2xl overflow-hidden shadow-lg sm:shadow-xl"
-                  speed={0.15}
-                >
-                  <Image
-                    src="/images/team-collaboration.jpg"
-                    alt="Farmacosm team working together"
-                    fill
-                    className="object-cover transition-transform duration-700 hover:scale-105"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
-                </ParallaxImage>
-              </SlideInLeft>
+  <div className="relative aspect-[4/3] min-h-[240px] sm:min-h-[320px] lg:aspect-auto lg:h-[500px] rounded-xl sm:rounded-2xl overflow-hidden shadow-lg sm:shadow-xl">
+    <ParallaxImage
+      speed={0.15}
+      className="absolute inset-0 w-full h-full"
+    >
+      <img
+        src="/images/team-collaborations.png"
+        alt="Farmacosm team working together"
+        className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+      />
+    </ParallaxImage>
+  </div>
+</SlideInLeft>
 
               <SlideInRight>
                 <p className="text-xs sm:text-sm font-semibold text-primary">

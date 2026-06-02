@@ -55,8 +55,7 @@ export function WhatWeDo() {
               
               <div className="pt-6 flex justify-start">
                 <div className="group inline-flex items-start gap-2 text-primary font-semibold pl-4 border-l-4 border-primary text-left">
-                  Explore how we optimize every link in your business operations.
-                  {/* <ChevronRight className="h-6 w-6 transition-transform group-hover:translate-x-1 flex-shrink-0 mt-1" /> */}
+                  {t("services.optimizeTitle")}
                 </div>
               </div>
             </motion.div>

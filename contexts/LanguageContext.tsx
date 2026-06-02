@@ -3,6 +3,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import type { Language, Translations } from '@/lib/translations';
 import { getTranslation, mergeTranslations } from '@/lib/translations';
+import en from '@/public/locales/en.json';
+import km from '@/public/locales/km.json';
 
 interface LanguageContextType {
   language: Language;
@@ -27,20 +29,21 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     const loadTranslations = async () => {
       try {
         setIsLoading(true);
-        
+
+        const translations: Record<string, Record<string, any>> = {
+          en,
+          km,
+        };
+
         // Load English translations (always load as fallback)
-        const enRes = await fetch('/locales/en.json');
-        const enTranslations = await enRes.json();
+        const enTranslations = translations.en;
 
         // Load language-specific translations
         let selectedTranslations = enTranslations;
         if (language !== 'en') {
-          const langRes = await fetch(`/locales/${language}.json`);
-          if (langRes.ok) {
-            const langTranslations = await langRes.json();
-            // Merge with English as fallback
-            selectedTranslations = mergeTranslations(enTranslations, langTranslations);
-          }
+          const langTranslations = translations[language];
+          // Merge with English as fallback
+          selectedTranslations = mergeTranslations(enTranslations, langTranslations);
         }
 
         setTranslations(selectedTranslations);

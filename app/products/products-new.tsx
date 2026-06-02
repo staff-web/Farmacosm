@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ArrowRight } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link"; // Add this import
 import { useLanguage } from "@/contexts/LanguageContext";
 import { categories, Product, productData, SLUG_TO_CATEGORY } from "./products-data";
 
@@ -37,10 +38,10 @@ function ProductCard({
       className="group bg-white rounded-lg sm:rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer flex flex-col h-full"
     >
       {/* Image - fixed height remains the same */}
-      <div className="relative h-40 sm:h-44 lg:h-48 overflow-hidden bg-gray-100 flex-shrink-0">
+      <div className="relative aspect-video w-full overflow-hidden bg-gray-100 flex-shrink-0">
         <Image
           src={product.image || "/placeholder.svg"}
-          alt={product.name}
+          alt={product.nameKey ? t(product.nameKey) : product.name}
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-105"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -51,11 +52,11 @@ function ProductCard({
       <div className="p-4 sm:p-4 lg:p-5 flex flex-col flex-grow">
         {/* Title - can wrap but doesn't affect alignment */}
         <h3 className="text-sm sm:text-base font-bold text-gray-900 leading-snug">
-          {product.name}
+          {product.nameKey ? t(product.nameKey) : product.name}
         </h3>
         
         {/* Specs - can wrap */}
-        <p className="mt-1 text-xs sm:text-sm text-gray-500">{product.specs}</p>
+        {/* <p className="mt-1 text-xs sm:text-sm text-gray-500">{product.specs}</p> */}
 
         {/* Spacer that pushes the View Details link to the bottom */}
         <div className="flex-grow" />
@@ -71,7 +72,9 @@ function ProductCard({
   );
 }
 
-// ─── Modal — Simplified version (only image, title, and contact button) ──────
+// ─── Modal — Fixed version with Link component ──────────────────────────────
+
+// ─── Modal — Fixed version with description added ──────────────────────────────
 
 function ProductModal({
   product,
@@ -88,11 +91,6 @@ function ProductModal({
     return () => { document.body.style.overflow = ""; };
   }, []);
 
-  const handleContactClick = () => {
-    // You can replace this with your actual contact logic
-    window.location.href = '/contact';
-  };
-
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 lg:p-6 bg-black/60"
@@ -103,7 +101,7 @@ function ProductModal({
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.96, y: 12 }}
         transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-        className="relative w-full max-w-xl sm:max-w-2xl bg-white rounded-lg sm:rounded-2xl shadow-2xl overflow-hidden"
+        className="relative w-full max-w-4xl bg-white rounded-lg sm:rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close button - X in top-right corner */}
@@ -116,7 +114,7 @@ function ProductModal({
         </button>
 
         {/* Hero image */}
-        <div className="relative h-40 sm:h-48 lg:h-60 w-full bg-gray-100">
+        <div className="relative aspect-video w-full bg-gray-100">
           <Image
             src={product.image || "/placeholder.svg"}
             alt={product.name}
@@ -126,129 +124,102 @@ function ProductModal({
           />
         </div>
 
-        {/* Simplified Body - Only Title and Contact Button */}
+        {/* Body Content */}
         <div className="p-6 sm:p-8 lg:p-10">
           {/* Category pill */}
           <span className="inline-block bg-blue-50 text-blue-600 text-xs font-medium px-2.5 sm:px-3 py-1 rounded-full border border-blue-100">
-            {product.category}
+            {t(product.category)}
           </span>
 
           {/* Title */}
           <h2 className="mt-3 sm:mt-4 text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 leading-tight">
-            {product.name}
+            {product.nameKey ? t(product.nameKey) : product.name}
           </h2>
 
+          {/* Specs - Added this line */}
+          {/* <p className="mt-2 text-sm text-gray-500">{product.specsKey ? t(product.specsKey) : product.specs}</p> */}
+
           {/* Price */}
-          <p className="mt-2 text-sm sm:text-base font-semibold text-blue-600">{product.price}</p>
+          <p className="mt-2 text-sm sm:text-base font-semibold text-blue-600">
+            {product.priceKey ? t(product.priceKey) : product.price}
+          </p>
 
           {/* Divider */}
           <hr className="my-6 sm:my-8 border-gray-100" />
 
-          {/* Contact Button */}
-          <button
-            onClick={handleContactClick}
-            className="w-full py-3 sm:py-4 bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base font-semibold rounded-lg sm:rounded-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 group"
-          >
-            <span>{t("products.contactForInfo")}</span>
-            <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 transition-transform duration-300 group-hover:translate-x-1" />
-          </button>
-        </div>
-
-        {/* ===== DETAILED PRODUCT INFORMATION - TEMPORARILY COMMENTED OUT ===== */}
-        {/* 
-        <div className="p-4 sm:p-6 lg:p-8">
-          <span className="inline-block bg-blue-50 text-blue-600 text-xs font-medium px-2.5 sm:px-3 py-1 rounded-full border border-blue-100">
-            {product.category}
-          </span>
-
-          <h2 className="mt-2 sm:mt-3 text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900 leading-tight">
-            {product.name}
-          </h2>
-
-          <p className="mt-1.5 sm:mt-2 text-sm sm:text-base font-semibold text-blue-600">{product.price}</p>
-
-          <hr className="my-3 sm:my-4 lg:my-5 border-gray-100" />
-
-          <div className="mb-4 sm:mb-5">
-            <h3 className="text-xs sm:text-sm font-bold text-gray-900 uppercase tracking-wide mb-2">
-              Specifications
-            </h3>
-            <p className="text-xs sm:text-sm text-gray-600">{product.specs}</p>
-          </div>
-
-          <div className="mb-4 sm:mb-5">
-            <h3 className="text-xs sm:text-sm font-bold text-gray-900 uppercase tracking-wide mb-2">
+          {/* DESCRIPTION - THIS WAS MISSING! */}
+          <div className="mb-6 sm:mb-8">
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3">
               Description
             </h3>
-            <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">{product.description}</p>
+            <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+              {product.descriptionKey ? t(product.descriptionKey) : product.description}
+            </p>
           </div>
 
-          {product.features && product.features.length > 0 && (
-            <div className="mb-4 sm:mb-5">
-              <h3 className="text-xs sm:text-sm font-bold text-gray-900 uppercase tracking-wide mb-2 sm:mb-3">
-                Features
+          {/* FEATURES - Adding for completeness */}
+          {/* {product.features && product.features.length > 0 && (
+            <div className="mb-6 sm:mb-8">
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3">
+                Key Features
               </h3>
-              <div className="grid grid-cols-1 gap-1.5 sm:gap-2 sm:grid-cols-2 lg:gap-x-6 lg:gap-y-2">
-                {product.features.map((feature, idx) => (
-                  <div key={idx} className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-600">
-                    <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-blue-500" />
+              <ul className="list-disc list-inside space-y-1.5">
+                {product.features.map((feature, index) => (
+                  <li key={index} className="text-sm sm:text-base text-gray-600">
                     {feature}
-                  </div>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
-          )}
+          )} */}
 
-          {product.applications && product.applications.length > 0 && (
-            <div className="mb-4 sm:mb-5">
-              <h3 className="text-xs sm:text-sm font-bold text-gray-900 uppercase tracking-wide mb-2 sm:mb-3">
+          {/* APPLICATIONS - Adding for completeness */}
+          {/* {product.applications && product.applications.length > 0 && (
+            <div className="mb-6 sm:mb-8">
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3">
                 Applications
               </h3>
-              <div className="grid grid-cols-1 gap-1.5 sm:gap-2 sm:grid-cols-2 lg:gap-x-6 lg:gap-y-2">
-                {product.applications.map((app, idx) => (
-                  <div key={idx} className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-600">
-                    <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-blue-500" />
-                    {app}
-                  </div>
+              <ul className="list-disc list-inside space-y-1.5">
+                {product.applications.map((application, index) => (
+                  <li key={index} className="text-sm sm:text-base text-gray-600">
+                    {application}
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
-          )}
+          )} */}
 
-          {product.technicalData && (
-            <div className="mb-4 sm:mb-6">
-              <h3 className="text-xs sm:text-sm font-bold text-gray-900 uppercase tracking-wide mb-2">
+          {/* TECHNICAL DATA - Adding for completeness */}
+          {/* {product.technicalData && (
+            <div className="mb-6 sm:mb-8">
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3">
                 Technical Data
               </h3>
-              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed whitespace-pre-line">
+              <p className="text-sm sm:text-base text-gray-600 bg-gray-50 p-4 rounded-lg">
                 {product.technicalData}
               </p>
             </div>
-          )}
+          )} */}
 
-          <hr className="mb-4 sm:mb-5 border-gray-100" />
+          {/* Divider before button */}
+          <hr className="my-6 sm:my-8 border-gray-100" />
 
-          <div className="flex gap-2 sm:gap-3">
-            <button
-              className="flex-1 py-2 sm:py-3 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold rounded-lg sm:rounded-xl transition-colors"
-              onClick={onClose}
+          {/* Contact Button */}
+          <Link href="/contact" onClick={onClose}>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full py-3 sm:py-4 bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base font-semibold rounded-lg sm:rounded-xl transition-all duration-300 flex items-center justify-center gap-2 group cursor-pointer"
             >
-              Request Quote
-            </button>
-            <button
-              className="flex-1 py-2 sm:py-3 bg-white hover:bg-gray-50 text-gray-900 text-xs sm:text-sm font-semibold rounded-lg sm:rounded-xl border border-gray-200 transition-colors"
-              onClick={onClose}
-            >
-              Close
-            </button>
-          </div>
+              <span>{t("products.contactForInfo")}</span>
+              <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 transition-transform duration-300 group-hover:translate-x-1" />
+            </motion.div>
+          </Link>
         </div>
-        */}
       </motion.div>
     </div>
   );
 }
-
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 export function ProductsNewContent() {
@@ -304,6 +275,11 @@ export function ProductsNewContent() {
     router.push(`/products?category=${slug}`, { scroll: false });
   };
 
+  // Translate category key to display name
+  const getCategoryDisplayName = (categoryKey: string) => {
+    return t(categoryKey);
+  };
+
   return (
     <>
       <section className="bg-white py-12 sm:py-16 lg:py-20 min-h-screen">
@@ -344,7 +320,7 @@ export function ProductsNewContent() {
                         }`}
                       >
                         <span className={isSelected ? "font-semibold" : "font-normal"}>
-                          {category}
+                          {getCategoryDisplayName(category)}
                         </span>
                       </button>
                     );
@@ -364,14 +340,14 @@ export function ProductsNewContent() {
                 className="mb-6 sm:mb-8"
               >
                 <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">
-                  {selectedCategory}
+                  {getCategoryDisplayName(selectedCategory)}
                 </h1>
-                <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-gray-500">
+                {/* <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-gray-500">
                   {currentProducts.length}{" "}
                   {currentProducts.length !== 1
                     ? t("products.availablePlural")
                     : t("products.available")}
-                </p>
+                </p> */}
               </motion.div>
 
               {/* Products grid */}

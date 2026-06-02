@@ -41,14 +41,17 @@ export function PageHero({ imageSrc, title, subtitle, description, useTranslatio
         style={{ y: imageY, scale: imageScale }}
         className="absolute inset-0"
       >
-        <Image
-          src={imageSrc || "/placeholder.svg"}
-          alt={title}
-          fill
-          className="object-cover"
-          priority
-          sizes="100vw"
-        />
+
+<Image
+  src={imageSrc || "/placeholder.svg"} // This placeholder might not exist
+  alt={title}
+  fill
+  className="object-cover"
+  priority
+  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw" // Add this
+  // Add these for better loading
+  loading="eager"
+/>
       </motion.div>
 
       {/* Blue tinted overlay with blur effect */}

@@ -37,7 +37,7 @@
     },
     "cta": {
       "title": "Ready to partner with us?",
-      "description": "Let us help you source high-quality materials for your business.",
+      "description": "Let us help you find solution for your business.",
       "button": "Get in touch"
     }
   },
@@ -66,6 +66,50 @@
       "chemical": "Chemical",
       "agro": "Agro-product",
       "packaging": "Packaging"
+    },
+    "items": {
+      "pharmaMaterial": {
+        "name": "Pharmaceutical and Health Care Material",
+        "description": "A raw or processed substance used in the manufacture of medicines, medical devices, supplements, and health care products.",
+        "specs": "99.8% purity, Ph.Eur standard",
+        "price": "Contact for quote"
+      },
+      "personalCareMaterial": {
+        "name": "Personal and Home Care Material",
+        "description": "A raw or processed substance used in formulating personal care products (skincare, haircare, oral care) and home care products (detergents, cleaners, disinfectants). These materials provide cleansing, conditioning, and protective functions.",
+        "specs": "100% natural blend",
+        "price": "Contact for quote"
+      },
+      "foodProduct": {
+        "name": "Food Product",
+        "description": "A finished, processed, or packaged item intended for human consumption that has undergone preparation, combination, or transformation from raw ingredients.",
+        "specs": "Food grade certified",
+        "price": "Contact for quote"
+      },
+      "foodIngredient": {
+        "name": "Food Ingredient",
+        "description": "Any substance that is added to food during production, processing, or preparation to achieve a desired effect such as preservation, flavor, texture, or appearance.",
+        "specs": "Stabilizing agent",
+        "price": "Contact for quote"
+      },
+      "chemicalMaterial": {
+        "name": "Chemical",
+        "description": "A substance with a defined molecular composition used in industrial processes, manufacturing, agriculture and research. Chemicals serve as raw materials, reagents, solvents, and intermediates across virtually all industries.",
+        "specs": "Lab and industrial use",
+        "price": "Contact for quote"
+      },
+      "agroProduct": {
+        "name": "Agro-Product",
+        "description": "A raw or semi-processed product derived from agricultural activities including farming, forestry, and fisheries. Agro-products serve as food, medicinal, feed, fuel, and industrial raw materials for downstream processing.",
+        "specs": "Customizable formulations",
+        "price": "Contact for quote"
+      },
+      "packagingMaterial": {
+        "name": "Cosmetic and Food Packaging",
+        "description": "Containers and materials designed to hold, protect, and present cosmetic and food products. Packaging ensures product stability, hygiene, and brand appeal while enabling precise dispensing and consumer convenience.",
+        "specs": "Eco-friendly formulation",
+        "price": "Contact for quote"
+      }
     }
   },
   "contact": {
@@ -89,7 +133,7 @@
     "company": "Company",
     "products": "Products",
     "address": "Address",
-    "viewContact": "View Contact Details",
+    "viewContact": "Contact Us",
     "tagline": "Together for better"
   },
   "services": {
@@ -105,7 +149,7 @@
     "partnerDesc": "We work as your partner, invested in your success and long-term growth.",
     "supplyChain": {
       "title": "Supply Chain",
-      "description": "Comprehensive supply of raw materials, equipment, and packaging solutions for the pharmaceutical, chemical, food, cosmetic, home care, and personal care industries."
+      "description": "Comprehensive supply of raw materials, chemical, equipment, and packaging solutions."
     },
     "productDev": {
       "title": "Product Development",
@@ -117,7 +161,7 @@
       "details": "We combine OEM scale with ODM creativity — so whether you bring us your specs or need us to design the product from scratch, we own every step from formulation to finished goods."
     },
     "rd": {
-      "title": "R&D and Product Analysis",
+      "title": "R&D and Product analysis",
       "description": "Research & Development",
       "details": "Advance your pipeline with our research and development partnerships. We invest in cutting-edge science to create breakthrough pharmaceutical and nutraceutical solutions."
     },
@@ -125,7 +169,8 @@
       "title": "Distribution & Warehousing",
       "description": "Regional Storage & Distribution",
       "details": "Our distribution warehouse extends our logistics capabilities — offering dedicated storage, pick-and-pack, and last-mile distribution across Southeast Asia, purpose-built for pharmaceutical and specialty chemical supply chains."
-    }
+    },
+    "optimizeTitle": "Explore how we optimize every link in your business operations"
   },
   "about": {
     "foundation": "OUR FOUNDATION",
@@ -134,9 +179,9 @@
     "heroDesc": "Farmacosm brings together core values of reliability, quality, and customer focus across multiple industries. Discover what drives us.",
     "industriesLabel": "INDUSTRIES WE SERVE:",
     "missionTitle": "Our Mission",
-    "missionDesc": "To provide reliable, sustainable, and cost-effective supply chain solutions, empowering businesses in Cambodia and Southeast Asia to access high-quality materials through strong partnerships and a customer-first approach.",
+    "missionDesc": "Our mission is to provide ethical, dependable, and innovative ingredient solutions that enhance supply chain performance and support sustainable growth across regional industries.",
     "visionTitle": "Our Vision",
-    "visionDesc": "To become the leading supply chain partner in the region, recognized for quality, innovation, and sustainability in pharmaceutical, chemical, food, and personal care material sourcing.",
+    "visionDesc": "Our vision is to empower businesses across the region to thrive, grow, and lead through innovation and operational excellence. We aim to be the foundation for this growth, working enthusiastically behind the scenes to provide smart, sustainable supply chain solutions that industry partners need to succeed every day.",
     "teamLabel": "Our team",
     "teamTitle": "Expert professionals, dedicated to your success.",
     "teamDesc": "Our team combines deep technical knowledge with industry experience across pharmaceutical sciences, product development, regulatory compliance, and supply chain management.",
@@ -163,7 +208,15 @@
     "sectionTitle": "Farmacosm News",
     "sectionDesc": "Industry insights, market trends, and company updates from the pharmaceutical and chemical supply chain leaders.",
     "moreNews": "More News",
-    "browseCategory": "Browse by Category"
+    "browseCategory": "Browse by Category",
+    "backToNews": "Back to News",
+    "alsoIn": "Also In",
+    "articleHeadingLookingAhead": "Looking Ahead",
+    "articleFutureParagraph1": "The next phase of innovation will centre on AI-driven demand forecasting and blockchain-based provenance tracking.",
+    "articleFutureParagraph2": "Early adopters in our network are already reporting significant reductions in waste and spoilage.",
+    "articleFutureParagraph3": "As regulatory frameworks evolve, those with transparent, auditable supply chains will find approval processes far smoother.",
+    "continueReading": "Continue Reading",
+    "viewAllNews": "View All News"
   },
   "pageHero": {
     "services": {

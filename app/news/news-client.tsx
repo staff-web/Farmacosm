@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { Calendar, User, ArrowRight } from "lucide-react";
 import { blogPosts } from "./blog-data";
+import type { BlogPost } from "./blog-data";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 
@@ -25,11 +26,19 @@ const itemVariants = {
 };
 
 export function NewsPageClient() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const featuredPosts = blogPosts.filter((post) => post.featured);
   const regularPosts = blogPosts.filter((post) => !post.featured);
+
+  const getTitle = (post: BlogPost) =>
+    language === "en" ? post.title_en : post.title_kh;
+  const getExcerpt = (post: BlogPost) =>
+    language === "en" ? post.excerpt_en : post.excerpt_kh;
+  const getCategory = (post: BlogPost) =>
+    language === "en" ? post.category_en : post.category_kh;
+
   const categories = Array.from(
-    new Set(blogPosts.map((post) => post.category))
+    new Set(blogPosts.map((post) => getCategory(post)))
   );
 
   return (
@@ -85,7 +94,7 @@ export function NewsPageClient() {
                   >
                     <Image
                       src={post.image}
-                      alt={post.title}
+                      alt={getTitle(post)}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
                       sizes="(max-width: 768px) 100vw, 50vw"
@@ -95,7 +104,7 @@ export function NewsPageClient() {
                     {/* Category Badge */}
                     <div className="absolute top-2 sm:top-3 left-2 sm:left-4">
                       <span className="inline-block bg-primary px-2 sm:px-3 py-0.5 sm:py-1 text-xs font-bold text-primary-foreground uppercase tracking-wide">
-                        {post.category}
+                        {getCategory(post)}
                       </span>
                     </div>
                   </div>
@@ -108,10 +117,10 @@ export function NewsPageClient() {
                   >
                     <div>
                       <h3 className="text-base sm:text-lg lg:text-xl font-bold text-foreground group-hover:text-primary transition-colors">
-                        {post.title}
+                        {getTitle(post)}
                       </h3>
                       <p className="mt-2 sm:mt-2.5 text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                        {post.excerpt}
+                        {getExcerpt(post)}
                       </p>
                     </div>
 
@@ -164,7 +173,7 @@ export function NewsPageClient() {
                   <div className="relative overflow-hidden bg-muted h-36 sm:h-40 lg:h-48">
                     <Image
                       src={post.image}
-                      alt={post.title}
+                      alt={getTitle(post)}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
                       sizes="(max-width: 768px) 100vw, 50vw"
@@ -174,7 +183,7 @@ export function NewsPageClient() {
                     {/* Category Badge */}
                     <div className="absolute top-2 left-2 sm:top-3 sm:left-3">
                       <span className="inline-block bg-primary px-2 py-0.5 sm:px-2.5 sm:py-1 text-xs font-bold text-primary-foreground uppercase tracking-wide">
-                        {post.category}
+                        {getCategory(post)}
                       </span>
                     </div>
                   </div>
@@ -183,10 +192,10 @@ export function NewsPageClient() {
                   <div className="flex flex-col justify-between p-4 sm:p-4 lg:p-5 flex-1">
                     <div>
                       <h3 className="font-bold text-sm sm:text-base lg:text-lg text-foreground group-hover:text-primary transition-colors line-clamp-2">
-                        {post.title}
+                        {getTitle(post)}
                       </h3>
                       <p className="mt-2 text-xs sm:text-sm text-muted-foreground line-clamp-2">
-                        {post.excerpt}
+                        {getExcerpt(post)}
                       </p>
                     </div>
 
@@ -220,9 +229,9 @@ export function NewsPageClient() {
             {t("news.browseCategory")}
           </h3>
           <div className="flex flex-wrap gap-2 sm:gap-3">
-            {categories.map((category) => (
+            {categories.map((category, index) => (
               <button
-                key={category}
+                key={`${category}-${index}`}
                 className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-full bg-primary/10 text-primary font-medium text-xs sm:text-sm hover:bg-primary/20 transition-colors border border-primary/20 hover:border-primary/40"
               >
                 {category}
