@@ -124,7 +124,11 @@
     "email": "អ៊ីម៉ែល",
     "phone": "ទូរស័ព្ទ",
     "message": "សារ",
-    "submit": "ដាក់ស្នើ"
+    "submit": "ដាក់ស្នើ",
+    "company": "ក្រុមហ៊ុន",
+    "companyPlaceholder": "បញ្ចូលឈ្មោះក្រុមហ៊ុន",
+    "country": "ប្រទេស",
+    "countryPlaceholder": "ប្រភពប្រទេស"
   },
   "footer": {
     "copyright": "រក្សា​សិទ្ធ​គ្រប់បែបយ៉ាង",

@@ -124,7 +124,11 @@
     "email": "Email",
     "phone": "Phone",
     "message": "Message",
-    "submit": "Submit"
+    "submit": "Submit",
+    "company": "Company Name",
+    "companyPlaceholder": "Enter your company name",
+    "country": "Country",
+    "countryPlaceholder": "Country of origin"
   },
   "footer": {
     "copyright": "All rights reserved",

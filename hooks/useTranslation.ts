@@ -9,10 +9,10 @@ import { useLanguage } from '@/contexts/LanguageContext';
 
 /**
  * Custom hook for translations
- * Usage: const t = useTranslation();
+ * Usage: const { t, language, isLoading, loadError } = useTranslation();
  *        t('contact.callUs')
  */
 export function useTranslation() {
-  const { t, language } = useLanguage();
-  return { t, language };
+  const { t, language, isLoading, loadError } = useLanguage();
+  return { t, language, isLoading, loadError };
 }

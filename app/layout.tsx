@@ -4,6 +4,8 @@ import { Inter } from "next/font/google";
 
 import "./globals.css";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import CookieConsent from "@/components/CookiesConsent";
+
 
 const inter = Inter({
   subsets: ["latin"],
@@ -53,6 +55,7 @@ export default function RootLayout({
       <body className="font-sans antialiased">
         <LanguageProvider>
           {children}
+          <CookieConsent />
         </LanguageProvider>
       </body>
     </html>

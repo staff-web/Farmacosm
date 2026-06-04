@@ -48,7 +48,8 @@ const heroImagesData = [
 ];
 
 export function Hero() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  console.log('🎬 Hero component rendered with language:', language);
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [autoplay, setAutoplay] = useState(true);
@@ -167,7 +168,11 @@ export function Hero() {
           >
             <span className="h-1.5 w-1.5 rounded-full bg-primary" />
             <span className="text-xs font-medium text-primary-foreground/90">
-              {t("home.hero.badge")}
+              {(() => {
+                const badge = t("home.hero.badge");
+                console.log('🎨 Rendering badge:', badge);
+                return badge;
+              })()}
             </span>
           </motion.div>
 

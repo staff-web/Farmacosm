@@ -8,7 +8,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LanguageSwitcher } from "@/components/language-switcher";
 
-// Updated to accept 't' and accurately map your product and service keys
 const getNavLinks = (t: (key: string) => string) => [
   { href: "/", label: t("navigation.home") },
   {
@@ -48,21 +47,17 @@ export function Navigation() {
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close mobile menu and reset state on route change
   useEffect(() => {
     setIsOpen(false);
     setMobileOpenSection(null);
     setOpenDropdown(null);
   }, [pathname]);
 
-  // Prevent body scroll when mobile menu is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -86,13 +81,13 @@ export function Navigation() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-          scrolled 
-            ? "bg-white shadow-md border-b border-slate-100 py-1" 
+          scrolled
+            ? "bg-white shadow-md border-b border-slate-100 py-1"
             : "bg-transparent py-4"
         }`}
       >
         <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8 gap-4">
-          {/* Logo Section */}
+          {/* Logo */}
           <Link href="/" className="flex items-center shrink-0">
             <motion.img
               src="/images/farmacosmlogo2.png"
@@ -102,11 +97,10 @@ export function Navigation() {
             />
           </Link>
 
-          {/* Desktop Links and Language Switcher */}
+          {/* Desktop links */}
           <div className="hidden lg:flex lg:gap-x-1 lg:items-center">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
-
               return (
                 <div
                   key={link.href}
@@ -126,23 +120,21 @@ export function Navigation() {
                   <Link
                     href={link.href}
                     className={`relative flex items-center gap-1 px-3 py-2 text-[15px] font-bold transition-colors duration-300 ${
-                      isActive 
-                        ? "text-[#0056b3]" 
-                        : scrolled 
-                          ? "text-slate-700 hover:text-[#0056b3]" 
+                      isActive
+                        ? "text-[#0056b3]"
+                        : scrolled
+                          ? "text-slate-700 hover:text-[#0056b3]"
                           : "text-white hover:text-white/80"
                     }`}
                   >
                     {link.label}
-                    
                     {link.subLinks && (
-                      <ChevronDown 
+                      <ChevronDown
                         className={`h-4 w-4 transition-transform duration-300 ${
                           openDropdown === link.href ? "rotate-180" : ""
-                        } ${isActive ? "text-[#0056b3]" : ""}`} 
+                        } ${isActive ? "text-[#0056b3]" : ""}`}
                       />
                     )}
-
                     {isActive && (
                       <motion.div
                         layoutId="underline"
@@ -159,6 +151,12 @@ export function Navigation() {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 10, scale: 0.95 }}
                         className="absolute left-0 top-full mt-1 w-72 rounded-xl bg-white p-2 shadow-2xl border border-slate-100 z-50"
+                        onMouseEnter={() => {
+                          if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
+                        }}
+                        onMouseLeave={() => {
+                          closeTimeoutRef.current = setTimeout(() => setOpenDropdown(null), 150);
+                        }}
                       >
                         {link.subLinks.map((sub) => (
                           <Link
@@ -175,19 +173,19 @@ export function Navigation() {
                 </div>
               );
             })}
-            
-            {/* Language Switcher - Desktop */}
+
+            {/* Language switcher — desktop, passes scrolled so color matches nav links */}
             <div className="ml-2 lg:ml-4 pl-2 lg:pl-4 border-l border-primary/20">
-              <LanguageSwitcher />
+              <LanguageSwitcher scrolled={scrolled} />
             </div>
           </div>
 
-          {/* Mobile Controls - Menu and Language Switcher */}
+          {/* Mobile controls */}
           <div className="lg:hidden flex items-center gap-2 sm:gap-3">
+            {/* Mobile language switcher is always on white drawer bg, so scrolled=true */}
             <div className="scale-75 sm:scale-90">
-              <LanguageSwitcher />
+              <LanguageSwitcher scrolled={true} />
             </div>
-
             <button
               onClick={() => setIsOpen(!isOpen)}
               className={`p-2 rounded-md transition-colors relative z-50 ${
@@ -201,20 +199,17 @@ export function Navigation() {
         </nav>
       </motion.header>
 
-      {/* Mobile Menu */}
+      {/* Mobile drawer */}
       <AnimatePresence>
         {isOpen && (
           <>
-            {/* Backdrop */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
               className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] lg:hidden"
             />
-            
-            {/* Full Screen Drawer */}
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
@@ -232,28 +227,26 @@ export function Navigation() {
                       alt="Farmacosm Logo"
                     />
                   </Link>
-                  <button 
-                    onClick={() => setIsOpen(false)} 
+                  <button
+                    onClick={() => setIsOpen(false)}
                     className="p-2 -mr-2 text-slate-400 hover:text-slate-600 transition-colors"
                     aria-label="Close menu"
                   >
                     <X className="h-7 w-7 sm:h-8 sm:w-8" />
                   </button>
                 </div>
-                
-                {/* Scrollable Navigation Links */}
+
                 <div className="flex-1 overflow-y-auto py-4 px-4 sm:px-6">
                   <div className="flex flex-col gap-y-1">
                     {navLinks.map((link) => {
                       const isActive = pathname === link.href;
                       const hasSubLinks = !!link.subLinks;
                       const isSectionOpen = mobileOpenSection === link.href;
-                      
                       return (
                         <div key={link.href} className="border-b border-slate-100 last:border-0">
                           <div className="flex items-center justify-between py-2">
-                            <Link 
-                              href={link.href} 
+                            <Link
+                              href={link.href}
                               onClick={() => !hasSubLinks && setIsOpen(false)}
                               className={`py-3 text-xl sm:text-2xl font-bold tracking-wide transition-colors ${
                                 isActive ? "text-[#0056b3]" : "text-slate-800 hover:text-[#0056b3]"
@@ -262,7 +255,7 @@ export function Navigation() {
                               {link.label}
                             </Link>
                             {hasSubLinks && (
-                              <button 
+                              <button
                                 onClick={() => setMobileOpenSection(isSectionOpen ? null : link.href)}
                                 className="p-3 -mr-3 text-slate-500 hover:text-[#0056b3] transition-colors"
                                 aria-label={`Toggle ${link.label} submenu`}
@@ -271,7 +264,6 @@ export function Navigation() {
                               </button>
                             )}
                           </div>
-                          
                           <AnimatePresence>
                             {hasSubLinks && isSectionOpen && (
                               <motion.div
@@ -282,10 +274,10 @@ export function Navigation() {
                               >
                                 <div className="flex flex-col pb-3 pl-3 sm:pl-4 mt-1 border-l-4 border-[#0056b3]/30 space-y-1">
                                   {link.subLinks!.map((sub) => (
-                                    <Link 
-                                      key={sub.href} 
-                                      href={sub.href} 
-                                      onClick={() => setIsOpen(false)} 
+                                    <Link
+                                      key={sub.href}
+                                      href={sub.href}
+                                      onClick={() => setIsOpen(false)}
                                       className="px-3 py-3 text-base sm:text-lg font-medium text-slate-600 hover:text-[#0056b3] hover:bg-slate-50 rounded-lg transition-colors"
                                     >
                                       {sub.label}
@@ -300,7 +292,7 @@ export function Navigation() {
                     })}
                   </div>
                 </div>
-                
+
                 <div className="p-4 sm:p-6 border-t border-slate-100 bg-slate-50">
                   <p className="text-sm text-slate-500 text-center">
                     © Farmacosm - Your Trusted Supply Chain Partner

@@ -9,6 +9,7 @@
     "lint": "next lint",
     "export": "next export",
     "translate": "node scripts/translate.js",
+    "translate:libre": "node scripts/translate-libre-batch.js",
     "setup-translations": "bash scripts/setup-translations.sh"
   },
   "dependencies": {

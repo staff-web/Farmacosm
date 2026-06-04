@@ -3,7 +3,8 @@
 import { motion } from "framer-motion";
 import { ContactForm } from "@/components/contact-form";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { MapPin, Phone, Clock } from "lucide-react";
+// import { languageFlagEmoji } from "@/lib/language-flags";
+import { Globe, MapPin, Phone, Clock } from "lucide-react";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -26,8 +27,12 @@ const itemVariants = {
 };
 
 export function ContactPageClient() {
-  const { t } = useLanguage();
-  
+  const { t, language } = useLanguage();
+  const currentLanguageName =
+    new Intl.DisplayNames(['en'], { type: 'language' }).of(language) ||
+    language.toUpperCase();
+  // const currentLanguageFlag = languageFlagEmoji(language);
+
   const contactInfo = [
     {
       icon: MapPin,
@@ -39,6 +44,12 @@ export function ContactPageClient() {
       icon: Clock,
       label: t("contact.hours"),
       value: "Monday – Friday, 8:00 AM – 5:00 PM",
+      href: null,
+    },
+    {
+      icon: Globe,
+      label: t("contact.country"),
+      value: ` ${currentLanguageName}`,
       href: null,
     },
   ];

@@ -2,7 +2,7 @@
  * Translation utilities and configuration
  */
 
-export type Language = 'en' | 'km';
+export type Language = string;
 
 export interface Translations {
   [key: string]: string | Translations;
@@ -65,4 +65,30 @@ export function mergeTranslations(base: Translations, override: Translations): T
   }
 
   return merged;
+}
+
+/**
+ * Rebuild a nested translation object from flattened keys
+ */
+export function unflattenTranslations(flattened: Record<string, string>): Translations {
+  const result: Translations = {};
+
+  for (const [key, value] of Object.entries(flattened)) {
+    const path = key.split('.');
+    let current: Translations = result;
+
+    for (let i = 0; i < path.length; i++) {
+      const segment = path[i];
+      if (i === path.length - 1) {
+        current[segment] = value;
+      } else {
+        if (typeof current[segment] !== 'object' || current[segment] === null) {
+          current[segment] = {};
+        }
+        current = current[segment] as Translations;
+      }
+    }
+  }
+
+  return result;
 }

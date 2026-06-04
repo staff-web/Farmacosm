@@ -1,103 +1,191 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Globe } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Button } from '@/components/ui/button';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
-/**
- * Language Switcher Component
- * Click-based dropdown for better mobile/desktop experience
- */
-export function LanguageSwitcher() {
-  const { language, setLanguage, t } = useLanguage();
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+const RAW_SUPPORTED_LANGUAGES: Array<{ code: string; label: string; nativeName: string }> = [
+  { code: 'af', label: 'Afrikaans', nativeName: 'Afrikaans' },
+  { code: 'sq', label: 'Albanian', nativeName: 'Shqip' },
+  { code: 'am', label: 'Amharic', nativeName: 'አማርኛ' },
+  { code: 'ar', label: 'Arabic', nativeName: 'العربية' },
+  { code: 'hy', label: 'Armenian', nativeName: 'Հայերեն' },
+  { code: 'az', label: 'Azerbaijani', nativeName: 'Azərbaycanca' },
+  { code: 'eu', label: 'Basque', nativeName: 'Euskara' },
+  { code: 'be', label: 'Belarusian', nativeName: 'Беларуская' },
+  { code: 'bn', label: 'Bengali', nativeName: 'বাংলা' },
+  { code: 'bs', label: 'Bosnian', nativeName: 'Bosanski' },
+  { code: 'bg', label: 'Bulgarian', nativeName: 'Български' },
+  { code: 'ca', label: 'Catalan', nativeName: 'Català' },
+  { code: 'ceb', label: 'Cebuano', nativeName: 'Cebuano' },
+  { code: 'ny', label: 'Chichewa', nativeName: 'Chichewa' },
+  { code: 'zh', label: 'Chinese', nativeName: '中文' },
+  { code: 'co', label: 'Corsican', nativeName: 'Corsu' },
+  { code: 'hr', label: 'Croatian', nativeName: 'Hrvatski' },
+  { code: 'cs', label: 'Czech', nativeName: 'Čeština' },
+  { code: 'da', label: 'Danish', nativeName: 'Dansk' },
+  { code: 'nl', label: 'Dutch', nativeName: 'Nederlands' },
+  { code: 'en', label: 'English', nativeName: 'English' },
+  { code: 'eo', label: 'Esperanto', nativeName: 'Esperanto' },
+  { code: 'et', label: 'Estonian', nativeName: 'Eesti' },
+  { code: 'tl', label: 'Filipino', nativeName: 'Filipino' },
+  { code: 'fi', label: 'Finnish', nativeName: 'Suomi' },
+  { code: 'fr', label: 'French', nativeName: 'Français' },
+  { code: 'fy', label: 'Frisian', nativeName: 'Frysk' },
+  { code: 'gl', label: 'Galician', nativeName: 'Galego' },
+  { code: 'ka', label: 'Georgian', nativeName: 'ქართული' },
+  { code: 'de', label: 'German', nativeName: 'Deutsch' },
+  { code: 'el', label: 'Greek', nativeName: 'Ελληνικά' },
+  { code: 'gu', label: 'Gujarati', nativeName: 'ગુજરાતી' },
+  { code: 'ht', label: 'Haitian Creole', nativeName: 'Kreyòl ayisyen' },
+  { code: 'ha', label: 'Hausa', nativeName: 'Hausa' },
+  { code: 'haw', label: 'Hawaiian', nativeName: 'ʻŌlelo Hawaiʻi' },
+  { code: 'he', label: 'Hebrew', nativeName: 'עברית' },
+  { code: 'hi', label: 'Hindi', nativeName: 'हिन्दी' },
+  { code: 'hmn', label: 'Hmong', nativeName: 'Hmong' },
+  { code: 'hu', label: 'Hungarian', nativeName: 'Magyar' },
+  { code: 'is', label: 'Icelandic', nativeName: 'Íslenska' },
+  { code: 'ig', label: 'Igbo', nativeName: 'Igbo' },
+  { code: 'id', label: 'Indonesian', nativeName: 'Bahasa Indonesia' },
+  { code: 'ga', label: 'Irish', nativeName: 'Gaeilge' },
+  { code: 'it', label: 'Italian', nativeName: 'Italiano' },
+  { code: 'ja', label: 'Japanese', nativeName: '日本語' },
+  { code: 'jw', label: 'Javanese', nativeName: 'Basa Jawa' },
+  { code: 'kn', label: 'Kannada', nativeName: 'ಕನ್ನಡ' },
+  { code: 'kk', label: 'Kazakh', nativeName: 'Қазақша' },
+  { code: 'km', label: 'Khmer', nativeName: 'ភាសាខ្មែរ' },
+  { code: 'rw', label: 'Kinyarwanda', nativeName: 'Kinyarwanda' },
+  { code: 'ko', label: 'Korean', nativeName: '한국어' },
+  { code: 'ku', label: 'Kurdish', nativeName: 'Kurdî' },
+  { code: 'ky', label: 'Kyrgyz', nativeName: 'Кыргызча' },
+  { code: 'lo', label: 'Lao', nativeName: 'ລາວ' },
+  { code: 'la', label: 'Latin', nativeName: 'Latina' },
+  { code: 'lv', label: 'Latvian', nativeName: 'Latviešu' },
+  { code: 'lt', label: 'Lithuanian', nativeName: 'Lietuvių' },
+  { code: 'lb', label: 'Luxembourgish', nativeName: 'Lëtzebuergesch' },
+  { code: 'mk', label: 'Macedonian', nativeName: 'Македонски' },
+  { code: 'mg', label: 'Malagasy', nativeName: 'Malagasy' },
+  { code: 'ms', label: 'Malay', nativeName: 'Bahasa Melayu' },
+  { code: 'ml', label: 'Malayalam', nativeName: 'മലയാളം' },
+  { code: 'mt', label: 'Maltese', nativeName: 'Malti' },
+  { code: 'mi', label: 'Maori', nativeName: 'Māori' },
+  { code: 'mr', label: 'Marathi', nativeName: 'मराठी' },
+  { code: 'mn', label: 'Mongolian', nativeName: 'Монгол' },
+  { code: 'my', label: 'Myanmar (Burmese)', nativeName: 'မြန်မာ' },
+  { code: 'ne', label: 'Nepali', nativeName: 'नेपाली' },
+  { code: 'no', label: 'Norwegian', nativeName: 'Norsk' },
+  { code: 'or', label: 'Odia', nativeName: 'ଓଡ଼ିଆ' },
+  { code: 'ps', label: 'Pashto', nativeName: 'پښتو' },
+  { code: 'fa', label: 'Persian', nativeName: 'فارسی' },
+  { code: 'pl', label: 'Polish', nativeName: 'Polski' },
+  { code: 'pt', label: 'Portuguese', nativeName: 'Português' },
+  { code: 'pa', label: 'Punjabi', nativeName: 'ਪੰਜਾਬੀ' },
+  { code: 'ro', label: 'Romanian', nativeName: 'Română' },
+  { code: 'ru', label: 'Russian', nativeName: 'Русский' },
+  { code: 'sm', label: 'Samoan', nativeName: 'Gagana Samoa' },
+  { code: 'gd', label: 'Scots Gaelic', nativeName: 'Gàidhlig' },
+  { code: 'sr', label: 'Serbian', nativeName: 'Српски' },
+  { code: 'st', label: 'Sesotho', nativeName: 'Sesotho' },
+  { code: 'sn', label: 'Shona', nativeName: 'Shona' },
+  { code: 'sd', label: 'Sindhi', nativeName: 'سنڌي' },
+  { code: 'si', label: 'Sinhala', nativeName: 'සිංහල' },
+  { code: 'sk', label: 'Slovak', nativeName: 'Slovenčina' },
+  { code: 'sl', label: 'Slovenian', nativeName: 'Slovenščina' },
+  { code: 'so', label: 'Somali', nativeName: 'Soomaali' },
+  { code: 'es', label: 'Spanish', nativeName: 'Español' },
+  { code: 'su', label: 'Sundanese', nativeName: 'Basa Sunda' },
+  { code: 'sw', label: 'Swahili', nativeName: 'Kiswahili' },
+  { code: 'sv', label: 'Swedish', nativeName: 'Svenska' },
+  { code: 'tg', label: 'Tajik', nativeName: 'Тоҷикӣ' },
+  { code: 'ta', label: 'Tamil', nativeName: 'தமிழ்' },
+  { code: 'te', label: 'Telugu', nativeName: 'తెలుగు' },
+  { code: 'tr', label: 'Turkish', nativeName: 'Türkçe' },
+  { code: 'uk', label: 'Ukrainian', nativeName: 'Українська' },
+  { code: 'ur', label: 'Urdu', nativeName: 'اردو' },
+  { code: 'uz', label: 'Uzbek', nativeName: 'Oʻzbek' },
+  { code: 'vi', label: 'Vietnamese', nativeName: 'Tiếng Việt' },
+  { code: 'cy', label: 'Welsh', nativeName: 'Cymraeg' },
+  { code: 'xh', label: 'Xhosa', nativeName: 'isiXhosa' },
+  { code: 'yi', label: 'Yiddish', nativeName: 'ייִדיש' },
+  { code: 'yo', label: 'Yoruba', nativeName: 'Yorùbá' },
+  { code: 'zu', label: 'Zulu', nativeName: 'isiZulu' },
+];
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+const PRIORITY_LANGUAGE_CODES = ['en', 'km', 'zh', 'ja', 'fr', 'ko'];
 
-  const languages = [
-    { code: 'en', label: t('common.english', 'English'), flag: '🇺🇸' },
-    { code: 'km', label: t('common.khmer', 'ខ្មែរ'), flag: '🇰🇭' },
-  ] as const;
+const prioritizedSupportedLanguages = PRIORITY_LANGUAGE_CODES
+  .map((code) => RAW_SUPPORTED_LANGUAGES.find((lang) => lang.code === code))
+  .filter((lang): lang is { code: string; label: string; nativeName: string } => Boolean(lang));
 
-  const currentLang = languages.find(l => l.code === language);
+const SUPPORTED_LANGUAGES = [
+  ...prioritizedSupportedLanguages,
+  ...RAW_SUPPORTED_LANGUAGES.filter((lang) => !PRIORITY_LANGUAGE_CODES.includes(lang.code)).sort((a, b) =>
+    a.label.localeCompare(b.label, 'en'),
+  ),
+];
 
-  return (
-    <div className="relative" ref={dropdownRef}>
-      {/* Main button - Click to toggle */}
-      <motion.button
-        whileTap={{ scale: 0.95 }}
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg sm:rounded-xl bg-white/90 backdrop-blur-sm border border-slate-200 hover:border-[#0056b3] hover:bg-white shadow-sm transition-all duration-300"
-        title={t('common.toggleLanguage', 'Toggle Language')}
-      >
-        <Globe className="h-4 sm:h-5 w-4 sm:w-5 text-[#0056b3]" />
-        
-        {/* Show full text on desktop, abbreviation on mobile */}
-        <span className="hidden sm:inline text-xs sm:text-sm font-semibold text-slate-700">
-          {currentLang?.label}
-        </span>
-        <span className="sm:hidden text-xs font-semibold text-slate-700">
-          {language.toUpperCase()}
-        </span>
-
-        {/* Chevron icon - rotates when open */}
-        <svg
-          className={`h-3 sm:h-4 w-3 sm:w-4 text-slate-600 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-        </svg>
-      </motion.button>
-
-      {/* Dropdown menu - AnimatePresence for click open/close */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="absolute right-0 top-full mt-2 w-44 bg-white rounded-xl border border-slate-200 shadow-xl z-50"
-          >
-            <div className="p-2">
-              {languages.map((lang) => (
-                <motion.button
-                  key={lang.code}
-                  whileHover={{ x: 4 }}
-                  onClick={() => {
-                    setLanguage(lang.code as any);
-                    setIsOpen(false);
-                  }}
-                  className={`w-full text-left px-4 py-2.5 rounded-lg transition-all duration-300 flex items-center gap-3 ${
-                    language === lang.code
-                      ? 'bg-[#0056b3] text-white'
-                      : 'text-slate-700 hover:bg-slate-100'
-                  }`}
-                >
-                  <span className="text-lg">{lang.flag}</span>
-                  <span className="text-sm font-medium">{lang.label}</span>
-                  {language === lang.code && (
-                    <span className="ml-auto text-white">✓</span>
-                  )}
-                </motion.button>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
+interface LanguageSwitcherProps {
+  /** Pass nav's scrolled state so the button color matches other nav links */
+  scrolled?: boolean;
 }
 
-type Language = 'en' | 'km';
+export function LanguageSwitcher({ scrolled = true }: LanguageSwitcherProps) {
+  const { language, setLanguage, isLoading, loadError } = useLanguage();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const currentLanguage = SUPPORTED_LANGUAGES.find((lang) => lang.code === language);
+  const currentLanguageName =
+    currentLanguage?.label ||
+    new Intl.DisplayNames(['en'], { type: 'language' }).of(language) ||
+    language.toUpperCase();
+
+  // When not scrolled (transparent nav over hero image) → white text like other links
+  // When scrolled (white bg nav) → slate-700 text like other links
+  const triggerColor = scrolled ? 'text-slate-700 hover:text-[#0056b3]' : 'text-white hover:text-white/80';
+
+  return (
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="ghost"
+          size="sm"
+          className={`gap-2 bg-transparent hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors duration-300 ${triggerColor}`}
+        >
+          <Globe className="h-4 w-4 shrink-0" />
+          <span className="hidden sm:inline text-sm font-bold">{currentLanguageName}</span>
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[200px] p-2">
+        <ScrollArea className="h-[400px] pr-4">
+          <div className="space-y-1">
+            {SUPPORTED_LANGUAGES.map((lang) => (
+              <Button
+                key={lang.code}
+                variant="ghost"
+                size="sm"
+                className={`w-full justify-start text-left transition-colors ${
+                  language === lang.code
+                    ? 'text-[#0056b3] font-semibold bg-blue-50'
+                    : 'text-slate-700 font-normal hover:text-[#0056b3]'
+                }`}
+                onClick={() => {
+                  setLanguage(lang.code);
+                  setIsOpen(false);
+                }}
+                disabled={isLoading && language === lang.code}
+              >
+                <span>{lang.label}</span>
+              </Button>
+            ))}
+          </div>
+          {loadError ? (
+            <p className="mt-2 text-xs text-red-600">{loadError}</p>
+          ) : null}
+        </ScrollArea>
+      </PopoverContent>
+    </Popover>
+  );
+}
